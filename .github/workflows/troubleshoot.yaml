@@ -9,4 +9,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Run tests
-      run: echo "running tests..${{github.event.client_payload.metadata}}"
+      run: echo "running tests..${{ toJSON(github.event.client_payload.metadata) }}"
