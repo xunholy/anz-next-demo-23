@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.raspbernetes.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: namespaces
+  namespace: flux-system
+spec:
+  interval: 10m
+  timeout: 30m
+  path: kubernetes/namespaces/overlays/cluster-0
+  prune: true
+  wait: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
