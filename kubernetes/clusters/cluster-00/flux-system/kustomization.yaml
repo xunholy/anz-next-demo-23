@@ -12,7 +12,7 @@ patches:
       metadata:
         name: kustomize-controller
         namespace: flux-system
-        annotations
+        annotations:
           iam.gke.io/gcp-service-account: sops-sa@kubecon-mgmt.iam.gserviceaccount.com
     target:
       kind: ServiceAccount
