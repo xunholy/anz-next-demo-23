@@ -28,6 +28,7 @@ spec:
   timeout: 3m
   path: "kubernetes/namespaces/base/configconnector-operator-system/config"
   prune: true
+  force: true
   wait: true
   sourceRef:
     kind: GitRepository
