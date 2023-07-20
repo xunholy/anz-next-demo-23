@@ -18,3 +18,18 @@ patches:
       kind: ServiceAccount
       name: kustomize-controller
       namespace: flux-system
+  # REQUIRED: Due to the kustomize controllers needing the ability to decrypt in the cluster without needing to add explicitly.
+  # TODO: This should be removed once this repository reaches a stable point where all secrets are defined in the repository.
+  - patch: |
+      apiVersion: kustomize.toolkit.fluxcd.io/v1
+      kind: Kustomization
+      metadata:
+        name: flux-system
+        namespace: flux-system
+      spec:
+        decryption:
+          provider: sops
+    target:
+      kind: Kustomization
+      name: flux-system
+      namespace: flux-system
