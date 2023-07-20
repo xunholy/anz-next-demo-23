@@ -16,5 +16,5 @@ spec:
     kind: GitRepository
     name: flux-system
   dependsOn:
-    - name: kcc-operator
+    - name: kcc-controller
       namespace: flux-system
