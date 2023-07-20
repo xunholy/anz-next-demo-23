@@ -3,18 +3,15 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: clusters
+  name: kcc-operator
   namespace: flux-system
 spec:
   interval: 30m
   retryInterval: 1m
   timeout: 3m
-  path: "kubernetes/namespaces/base/management-system/config/clusters"
+  path: "kubernetes/namespaces/base/configconnector-operator-system/operator-system"
   prune: true
   wait: true
   sourceRef:
     kind: GitRepository
     name: flux-system
-  dependsOn:
-    - name: kcc-operator
-      namespace: flux-system
