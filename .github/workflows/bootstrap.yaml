@@ -1,0 +1,12 @@
+name: "Bootstrap FluxCD"
+
+on:
+  repository_dispatch:
+    types: [Kustomization/clusters.flux-system]
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Run Bootstrap
+      run: echo "running tests..${{ toJSON(github.event.client_payload.metadata) }}"

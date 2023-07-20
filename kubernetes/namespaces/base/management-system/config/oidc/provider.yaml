@@ -1,0 +1,17 @@
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMWorkloadIdentityPoolProvider
+metadata:
+  name: github-oidc
+spec:
+  projectRef:
+    external: "projects/kubecon-mgmt"
+  location: "global"
+  workloadIdentityPoolRef:
+    name: "github-oidc"
+  attributeMapping:
+    google.subject: "true"
+  oidc:
+    issuerUri: "https://token.actions.githubusercontent.com"
+    allowedAudiences:
+    - "sample-audience"

@@ -1,0 +1,12 @@
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMWorkloadIdentityPool
+metadata:
+  name: github-oidc
+spec:
+  projectRef:
+    external: "projects/kubecon-mgmt"
+  location: "global"
+  displayName: "github-oidc-pool"
+  description: "A workload identity pool for github oidc"
+  disabled: false
