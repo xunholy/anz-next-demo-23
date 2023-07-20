@@ -7,8 +7,8 @@ resources:
 patches:
   # REQUIRED: Adds SOPs integration to GCP KMS via WLI
   - patch: |
-      apiVersion: apps/v1
-      kind: Deployment
+      apiVersion: v1
+      kind: ServiceAccount
       metadata:
         name: kustomize-controller
         namespace: flux-system
