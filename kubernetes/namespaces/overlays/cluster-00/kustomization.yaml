@@ -3,4 +3,4 @@ kind: Kustomization
 resources:
 - ../../base/flux-system
 - ../../base/configconnector-operator-system
-- ../../base/manage-system
+- ../../base/management-system
