@@ -2,7 +2,7 @@ name: "Bootstrap FluxCD"
 
 on:
   repository_dispatch:
-    types: [Kustomization/clusters.flux-system]
+    types: [Kustomization/cluster-01.flux-system]
 
 jobs:
   bootstrap:

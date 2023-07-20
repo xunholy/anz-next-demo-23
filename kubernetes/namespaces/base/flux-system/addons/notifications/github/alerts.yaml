@@ -22,7 +22,7 @@ metadata:
   name: flux-system-dispatch
   namespace: flux-system
 spec:
-  summary: "cluster-01"
+  summary: "cluster-00"
   eventSeverity: info
   eventSources:
   - kind: GitRepository
@@ -34,4 +34,4 @@ spec:
   providerRef:
     name: flux-system-dispatch
   eventMetadata:
-    app.kubernetes.io/cluster: "cluster-01"
+    app.kubernetes.io/cluster: "cluster-00"

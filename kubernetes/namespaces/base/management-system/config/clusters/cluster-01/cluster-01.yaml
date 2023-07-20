@@ -26,3 +26,20 @@ spec:
     gkeCluster:
       resourceRef:
         name: cluster-01
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta2
+kind: Alert
+metadata:
+  name: cluster-01
+  namespace: flux-system
+spec:
+  summary: "cluster-01"
+  eventSeverity: info
+  eventSources:
+  - kind: Kustomization
+    name: cluster-01
+    namespace: flux-system
+  providerRef:
+    name: flux-system-dispatch
+  eventMetadata:
+    app.kubernetes.io/cluster: "cluster-01"
