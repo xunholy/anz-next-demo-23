@@ -26,7 +26,7 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 3m
-  path: "kubernetes/namespaces/base/configconnector-operator-system/conig"
+  path: "kubernetes/namespaces/base/configconnector-operator-system/config"
   prune: true
   wait: true
   sourceRef:
