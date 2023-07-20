@@ -35,3 +35,20 @@ spec:
   dependsOn:
     - name: kcc-operator
       namespace: flux-system
+  healthChecks:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: cnrm-resource-stats-recorder
+      namespace: cnrm-system
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: cnrm-webhook-manager
+      namespace: cnrm-system
+    - apiVersion: apps/v1
+      kind: StatefulSet
+      name: cnrm-controller-manager
+      namespace: cnrm-system
+    - apiVersion: apps/v1
+      kind: StatefulSet
+      name: cnrm-deletiondefender
+      namespace: cnrm-system
