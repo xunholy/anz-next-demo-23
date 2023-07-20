@@ -3,3 +3,18 @@ kind: Kustomization
 resources:
 - gotk-components.yaml
 - gotk-sync.yaml
+
+patches:
+  # REQUIRED: Adds SOPs integration to GCP KMS via WLI
+  - patch: |
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: kustomize-controller
+        namespace: flux-system
+        annotations
+          iam.gke.io/gcp-service-account: sops-sa@kubecon-mgmt.iam.gserviceaccount.com
+    target:
+      kind: ServiceAccount
+      name: kustomize-controller
+      namespace: flux-system
