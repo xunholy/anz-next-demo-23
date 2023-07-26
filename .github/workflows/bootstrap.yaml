@@ -38,7 +38,7 @@ jobs:
       run: |
         echo "projectID=${{ github.event.inputs.projectID || github.event.client_payload.metadata.project }}" >> "${GITHUB_ENV}"
         echo "clusterName=${{ github.event.inputs.clusterName || github.event.client_payload.metadata.cluster }}" >> "${GITHUB_ENV}"
-        echo "location=${{ github.event.inputs.clusterName || github.event.client_payload.metadata.location }}" >> "${GITHUB_ENV}"
+        echo "location=${{ github.event.inputs.location || github.event.client_payload.metadata.location }}" >> "${GITHUB_ENV}"
 
     - name: Setup Flux CLI
       uses: fluxcd/flux2/action@main
@@ -47,11 +47,12 @@ jobs:
       name: 'Authenticate to Google Cloud'
       uses: 'google-github-actions/auth@v1'
       with:
+        token_format: "access_token"
         workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
         service_account: 'github-oidc@kubecon-mgmt.iam.gserviceaccount.com'
 
     - id: 'gcloud'
       name: 'gcloud'
       run: |-
-        # gcloud auth login --brief --cred-file="${{ steps.auth.outputs.credentials_file_path }}"
+        gcloud auth login --brief --cred-file="${{ steps.auth.outputs.credentials_file_path }}"
         gcloud container clusters get-credentials $clusterName --region $location --project $projectID
