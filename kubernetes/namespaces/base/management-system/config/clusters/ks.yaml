@@ -8,7 +8,7 @@ metadata:
 spec:
   interval: 30m
   retryInterval: 1m
-  timeout: 3m
+  timeout: 10m
   path: "kubernetes/namespaces/base/management-system/config/clusters/cluster-01"
   prune: true
   wait: true

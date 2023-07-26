@@ -66,6 +66,7 @@ jobs:
     - name: 'Bootstrap FluxCD'
       id: bootstrap
       run: |
+        export GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}"
         flux bootstrap github \
           --components-extra=image-reflector-controller,image-automation-controller \
           --owner="xunholy" \
