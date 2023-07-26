@@ -47,7 +47,7 @@ jobs:
       name: 'Authenticate to Google Cloud'
       uses: 'google-github-actions/auth@v1'
       with:
-        # token_format: "access_token"
+        token_format: "access_token"
         workload_identity_provider: 'projects/572968775626/locations/global/workloadIdentityPools/github-oidc/providers/github-oidc'
         service_account: 'github-oidc@kubecon-mgmt.iam.gserviceaccount.com'
 

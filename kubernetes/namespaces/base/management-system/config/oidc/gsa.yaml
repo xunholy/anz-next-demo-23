@@ -19,4 +19,4 @@ spec:
   bindings:
     - role: roles/iam.workloadIdentityUser
       members:
-        - principalSet://iam.googleapis.com/projects/kubecon-mgmt/locations/global/workloadIdentityPools/github-oidc/attribute.repository/xunholy/next-demo-01
+        - principalSet://iam.googleapis.com/projects/572968775626/locations/global/workloadIdentityPools/github-oidc/attribute.repository/xunholy/next-demo-01

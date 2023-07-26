@@ -12,10 +12,10 @@ spec:
     name: "github-oidc"
   attributeMapping:
     google.subject: assertion.sub
-    attribute.actor: assertion.actor
-    attribute.aud: attribute.aud
+    # attribute.actor: assertion.actor
+    # attribute.aud: attribute.aud
     attribute.repository: assertion.repository
   oidc:
     issuerUri: "https://token.actions.githubusercontent.com"
-
-The target service indicated by the "audience" parameters is invalid
+    allowedAudiences:
+    - workload_identity_provider
