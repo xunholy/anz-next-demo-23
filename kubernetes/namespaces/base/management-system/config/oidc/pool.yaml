@@ -1,5 +1,5 @@
 ---
-# DO NOT DELETE
+# Note: DO NOT DELETE - This needs to be manually restored if deleted.
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMWorkloadIdentityPool
 metadata:

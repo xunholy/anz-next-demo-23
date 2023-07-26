@@ -32,7 +32,7 @@ jobs:
     - uses: 'actions/checkout@v3'
 
     - name: Run Bootstrap
-      run: echo "running tests..${{ toJSON(github.event.client_payload.metadata.cluster) }}"
+      run: echo "running tests..${{ toJSON(github.event.client_payload.metadata) }}"
 
     - name: Override Defaults
       run: |
@@ -47,12 +47,17 @@ jobs:
       name: 'Authenticate to Google Cloud'
       uses: 'google-github-actions/auth@v1'
       with:
-        token_format: "access_token"
+        # token_format: "access_token"
         workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
         service_account: 'github-oidc@kubecon-mgmt.iam.gserviceaccount.com'
 
-    - id: 'gcloud'
-      name: 'gcloud'
-      run: |-
-        gcloud auth login --brief --cred-file="${{ steps.auth.outputs.credentials_file_path }}"
-        gcloud container clusters get-credentials $clusterName --region $location --project $projectID
+    - id: 'get-credentials'
+      uses: 'google-github-actions/get-gke-credentials@v1'
+      with:
+        project_id: $projectID
+        cluster_name: $clusterName
+        location: $location
+
+    # The KUBECONFIG env var is automatically exported and picked up by kubectl.
+    - id: 'get-pods'
+      run: 'kubectl get pods'

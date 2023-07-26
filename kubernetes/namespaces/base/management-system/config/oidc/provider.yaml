@@ -11,8 +11,9 @@ spec:
   workloadIdentityPoolRef:
     name: "github-oidc"
   attributeMapping:
-    google.subject: "true"
+    google.subject: assertion.sub
+    attribute.actor: assertion.actor
+    attribute.aud: attribute.aud
+    attribute.repository: assertion.repository
   oidc:
     issuerUri: "https://token.actions.githubusercontent.com"
-    allowedAudiences:
-    - "sample-audience"

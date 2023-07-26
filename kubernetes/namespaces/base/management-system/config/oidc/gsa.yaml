@@ -6,3 +6,17 @@ metadata:
   namespace: management-system
 spec:
   displayName: Service Account for GitHub Actions
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicy
+metadata:
+  name: github-oidc-pool-binding
+  namespace: management-system
+spec:
+  resourceRef:
+    kind: IAMServiceAccount
+    name: github-oidc
+  bindings:
+    - role: roles/iam.workloadIdentityUser
+      members:
+        - principalSet://iam.googleapis.com/projects/kubecon-mgmt/locations/global/workloadIdentityPools/github-oidc/attribute.repository/xunholy/next-demo-01
