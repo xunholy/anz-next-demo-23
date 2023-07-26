@@ -14,6 +14,11 @@ on:
         type: string
         description: 'GKE Cluster Name'
         required: true
+      location:
+        type: string
+        description: 'GKE Cluster Name'
+        default: 'us-west1'
+        required: true
 
 permissions:
   id-token: write # This is required for requesting the JWT
@@ -31,9 +36,9 @@ jobs:
 
     - name: Override Defaults
       run: |
-        echo "projectID=${{ github.event.inputs.projectID || github.event.client_payload.metadata }}" >> "${GITHUB_ENV}"
+        echo "projectID=${{ github.event.inputs.projectID || github.event.client_payload.metadata.project }}" >> "${GITHUB_ENV}"
         echo "clusterName=${{ github.event.inputs.clusterName || github.event.client_payload.metadata.cluster }}" >> "${GITHUB_ENV}"
-        echo "location=${{ github.event.inputs.clusterName || github.event.client_payload.metadata }}" >> "${GITHUB_ENV}"
+        echo "location=${{ github.event.inputs.clusterName || github.event.client_payload.metadata.location }}" >> "${GITHUB_ENV}"
 
     - name: Setup Flux CLI
       uses: fluxcd/flux2/action@main
@@ -48,5 +53,5 @@ jobs:
     - id: 'gcloud'
       name: 'gcloud'
       run: |-
-        gcloud auth login --brief --cred-file="${{ steps.auth.outputs.credentials_file_path }}"
+        # gcloud auth login --brief --cred-file="${{ steps.auth.outputs.credentials_file_path }}"
         gcloud container clusters get-credentials $clusterName --region $location --project $projectID
