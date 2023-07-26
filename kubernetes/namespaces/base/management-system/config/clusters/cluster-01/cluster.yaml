@@ -4,6 +4,8 @@ kind: ContainerCluster
 metadata:
   name: cluster-01
   namespace: management-system
+  annotations:
+    cnrm.cloud.google.com/project-id: kubecon-mgmt
 spec:
   enableAutopilot: true
   location: us-west1
@@ -17,6 +19,8 @@ kind: GKEHubMembership
 metadata:
   name: cluster-01
   namespace: management-system
+  annotations:
+    cnrm.cloud.google.com/project-id: kubecon-mgmt
 spec:
   location: global
   authority:
