@@ -19,7 +19,7 @@ spec:
   bindings:
     - role: roles/iam.workloadIdentityUser
       members:
-        - principalSet://iam.googleapis.com/projects/572968775626/locations/global/workloadIdentityPools/github-oidc-pool/attribute.repository/xunholy/next-demo-01
+        - principalSet://iam.googleapis.com/projects/572968775626/locations/global/workloadIdentityPools/github-oidc-pool/attribute.repository/xUnholy/next-demo-01
 ---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicyMember

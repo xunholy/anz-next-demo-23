@@ -35,10 +35,11 @@ jobs:
       run: echo "running tests..${{ toJSON(github.event.client_payload.metadata) }}"
 
     - name: Override Defaults
+      id: override
       run: |
-        echo "projectID=${{ github.event.inputs.projectID || github.event.client_payload.metadata.project }}" >> "${GITHUB_ENV}"
-        echo "clusterName=${{ github.event.inputs.clusterName || github.event.client_payload.metadata.cluster }}" >> "${GITHUB_ENV}"
-        echo "location=${{ github.event.inputs.location || github.event.client_payload.metadata.location }}" >> "${GITHUB_ENV}"
+        echo "projectID=${{ github.event.inputs.projectID || github.event.client_payload.metadata.project }}" >> $GITHUB_OUTPUT
+        echo "clusterName=${{ github.event.inputs.clusterName || github.event.client_payload.metadata.cluster }}" >> $GITHUB_OUTPUT
+        echo "location=${{ github.event.inputs.location || github.event.client_payload.metadata.location }}" >> $GITHUB_OUTPUT
 
     - name: Setup Flux CLI
       uses: fluxcd/flux2/action@main
@@ -54,9 +55,9 @@ jobs:
     - id: 'get-credentials'
       uses: 'google-github-actions/get-gke-credentials@v1'
       with:
-        project_id: $projectID
-        cluster_name: $clusterName
-        location: $location
+        project_id: ${{ steps.override.outputs.projectID }}
+        cluster_name: ${{ steps.override.outputs.clusterName }}
+        location: ${{ steps.override.outputs.location }}
 
     # The KUBECONFIG env var is automatically exported and picked up by kubectl.
     - id: 'get-pods'
