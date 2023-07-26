@@ -2,14 +2,14 @@
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMWorkloadIdentityPoolProvider
 metadata:
-  name: github-oidc
+  name: github
   namespace: management-system
 spec:
   projectRef:
     external: "projects/kubecon-mgmt"
   location: "global"
   workloadIdentityPoolRef:
-    name: "github-oidc"
+    name: "github-oidc-pool"
   attributeMapping:
     google.subject: assertion.sub
     # attribute.actor: assertion.actor
@@ -17,5 +17,3 @@ spec:
     attribute.repository: assertion.repository
   oidc:
     issuerUri: "https://token.actions.githubusercontent.com"
-    allowedAudiences:
-    - workload_identity_provider

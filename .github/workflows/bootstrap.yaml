@@ -48,7 +48,7 @@ jobs:
       uses: 'google-github-actions/auth@v1'
       with:
         token_format: "access_token"
-        workload_identity_provider: 'projects/572968775626/locations/global/workloadIdentityPools/github-oidc/providers/github-oidc'
+        workload_identity_provider: 'projects/572968775626/locations/global/workloadIdentityPools/github-oidc-pool/providers/github'
         service_account: 'github-oidc@kubecon-mgmt.iam.gserviceaccount.com'
 
     - id: 'get-credentials'

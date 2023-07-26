@@ -3,7 +3,7 @@
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMWorkloadIdentityPool
 metadata:
-  name: github-oidc
+  name: github-oidc-pool
   namespace: management-system
 spec:
   projectRef:
