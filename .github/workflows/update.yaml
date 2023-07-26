@@ -1,4 +1,4 @@
-name: update-flux
+name: "Update FluxCD"
 
 on:
   workflow_dispatch: {}
@@ -23,7 +23,7 @@ jobs:
         id: update
         run: |
           flux install \
-            --export > kubernetes/clusters/cluster-0/flux-system/gotk-components.yaml
+            --export > kubernetes/clusters/cluster-00/flux-system/gotk-components.yaml
           VERSION="$(flux -v)"
           echo "flux_version=$VERSION" >> $GITHUB_OUTPUT
 

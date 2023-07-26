@@ -1,4 +1,4 @@
-name: troubleshoot
+name: "Troubleshoot FluxCD"
 
 on:
   repository_dispatch:

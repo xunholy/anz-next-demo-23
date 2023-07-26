@@ -7,6 +7,11 @@ SERVICE_ACCOUNT_NAME=kcc-sa
 
 gcloud iam service-accounts create ${SERVICE_ACCOUNT_NAME}
 
+# TODO: This is not the best practice, but for the sake of the demo, we will give the service account owner access.
+gcloud projects add-iam-policy-binding ${PROJECT_ID} \
+  --member="serviceAccount:${SERVICE_ACCOUNT_NAME}@${PROJECT_ID}.iam.gserviceaccount.com" \
+  --role="roles/owner"
+
 gcloud projects add-iam-policy-binding ${PROJECT_ID} \
   --member="serviceAccount:${SERVICE_ACCOUNT_NAME}@${PROJECT_ID}.iam.gserviceaccount.com" \
   --role="roles/editor"

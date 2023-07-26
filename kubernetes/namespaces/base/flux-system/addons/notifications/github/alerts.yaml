@@ -23,7 +23,7 @@ metadata:
   namespace: flux-system
 spec:
   summary: "cluster-00"
-  eventSeverity: info
+  eventSeverity: error
   eventSources:
   - kind: GitRepository
     name: flux-system

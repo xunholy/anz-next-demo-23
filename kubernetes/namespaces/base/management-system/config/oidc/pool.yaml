@@ -1,12 +1,14 @@
 ---
+# DO NOT DELETE
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMWorkloadIdentityPool
 metadata:
   name: github-oidc
+  namespace: management-system
 spec:
   projectRef:
     external: "projects/kubecon-mgmt"
   location: "global"
   displayName: "github-oidc-pool"
-  description: "A workload identity pool for github oidc"
+  description: "A workload identity pool for GitHub OIDC"
   disabled: false

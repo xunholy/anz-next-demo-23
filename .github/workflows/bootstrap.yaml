@@ -3,10 +3,50 @@ name: "Bootstrap FluxCD"
 on:
   repository_dispatch:
     types: [Kustomization/cluster-01.flux-system]
+  workflow_dispatch:
+    inputs:
+      projectID:
+        type: string
+        description: 'GCP Project ID'
+        default: 'kubecon-mgmt'
+        required: true
+      clusterName:
+        type: string
+        description: 'GKE Cluster Name'
+        required: true
+
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read  # This is required for actions/checkout
 
 jobs:
   bootstrap:
     runs-on: ubuntu-latest
     steps:
+    # actions/checkout MUST come before auth
+    - uses: 'actions/checkout@v3'
+
     - name: Run Bootstrap
-      run: echo "running tests..${{ toJSON(github.event.client_payload.metadata) }}"
+      run: echo "running tests..${{ toJSON(github.event.client_payload.metadata.app.kubernetes.io~1cluster) }}"
+
+    - name: Override Defaults
+      run: |
+        echo "projectID=${{ github.event.inputs.projectID || github.event.client_payload.metadata }}" >> "${GITHUB_ENV}"
+        echo "clusterName=${{ github.event.inputs.clusterName || github.event.client_payload.metadata.app.kubernetes.io~1cluster }}" >> "${GITHUB_ENV}"
+        echo "location=${{ github.event.inputs.clusterName || github.event.client_payload.metadata }}" >> "${GITHUB_ENV}"
+
+    - name: Setup Flux CLI
+      uses: fluxcd/flux2/action@main
+
+    - id: 'auth'
+      name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v1'
+      with:
+        workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
+        service_account: 'github-oidc@kubecon-mgmt.iam.gserviceaccount.com'
+
+    - id: 'gcloud'
+      name: 'gcloud'
+      run: |-
+        gcloud auth login --brief --cred-file="${{ steps.auth.outputs.credentials_file_path }}"
+        gcloud container clusters get-credentials $clusterName --region $location --project $projectID

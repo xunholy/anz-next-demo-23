@@ -2,6 +2,7 @@
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMServiceAccount
 metadata:
-  name: github-oidc-flux
+  name: github-oidc
+  namespace: management-system
 spec:
-  displayName: Service Account for Flux in GitHub Actions
+  displayName: Service Account for GitHub Actions
