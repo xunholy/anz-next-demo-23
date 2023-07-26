@@ -17,3 +17,5 @@ spec:
     attribute.repository: assertion.repository
   oidc:
     issuerUri: "https://token.actions.githubusercontent.com"
+
+The target service indicated by the "audience" parameters is invalid

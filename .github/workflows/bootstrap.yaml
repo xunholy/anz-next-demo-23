@@ -16,7 +16,7 @@ on:
         required: true
       location:
         type: string
-        description: 'GKE Cluster Name'
+        description: 'GKE Location Name (Region or Zone)'
         default: 'us-west1'
         required: true
 
@@ -48,7 +48,7 @@ jobs:
       uses: 'google-github-actions/auth@v1'
       with:
         # token_format: "access_token"
-        workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
+        workload_identity_provider: 'projects/572968775626/locations/global/workloadIdentityPools/github-oidc/providers/github-oidc'
         service_account: 'github-oidc@kubecon-mgmt.iam.gserviceaccount.com'
 
     - id: 'get-credentials'
