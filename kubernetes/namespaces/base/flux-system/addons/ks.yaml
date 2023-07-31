@@ -1,5 +1,4 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.raspbernetes.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -17,3 +16,19 @@ spec:
     name: flux-system
   decryption:
     provider: sops
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: flux-system-repositories-oci
+  namespace: flux-system
+spec:
+  interval: 30m
+  retryInterval: 1m
+  timeout: 3m
+  path: "kubernetes/namespaces/base/flux-system/addons/repositories/oci"
+  prune: true
+  wait: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
