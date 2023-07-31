@@ -2,7 +2,8 @@ name: "Bootstrap FluxCD"
 
 on:
   repository_dispatch:
-    types: [Kustomization/cluster-01.flux-system]
+    # TODO: This currently need to be updated to match the cluster name however, needs to be dynamic in future.
+    types: [Kustomization/cluster-02.flux-system]
   workflow_dispatch:
     inputs:
       projectID:

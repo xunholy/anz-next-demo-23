@@ -4,9 +4,11 @@ kind: ContainerCluster
 metadata:
   name: cluster-02
   namespace: management-system
+  annotations:
+    cnrm.cloud.google.com/project-id: kubecon-mgmt
 spec:
   enableAutopilot: true
-  location: us-west1
+  location: us-east1
   releaseChannel:
     channel: RAPID
   workloadIdentityConfig:
@@ -17,11 +19,13 @@ kind: GKEHubMembership
 metadata:
   name: cluster-02
   namespace: management-system
+  annotations:
+    cnrm.cloud.google.com/project-id: kubecon-mgmt
 spec:
   location: global
   authority:
     # Issuer must contain a link to a valid JWT issuer. Your ContainerCluster is one. To use it, replace ${PROJECT_ID?} with your project ID.
-    issuer: https://container.googleapis.com/v1/projects/kubecon-mgmt/locations/us-west1/clusters/cluster-02
+    issuer: https://container.googleapis.com/v1/projects/kubecon-mgmt/locations/us-east1/clusters/cluster-02
   endpoint:
     gkeCluster:
       resourceRef:
@@ -37,11 +41,11 @@ spec:
   eventSeverity: info
   eventSources:
   - kind: Kustomization
-    name: cluster-02
+    name: '*'
     namespace: flux-system
   providerRef:
     name: flux-system-dispatch
   eventMetadata:
-    app.kubernetes.io/project: "kubecon-mgmt"
-    app.kubernetes.io/cluster: "cluster-02"
-    app.kubernetes.io/location: "us-west1"
+    project: "kubecon-mgmt"
+    cluster: "cluster-02"
+    location: "us-east1"
