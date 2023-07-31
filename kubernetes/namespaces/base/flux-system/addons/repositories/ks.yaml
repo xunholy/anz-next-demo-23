@@ -2,17 +2,15 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: flux-system-notifications
+  name: flux-system-repositories-oci
   namespace: flux-system
 spec:
   interval: 30m
   retryInterval: 1m
   timeout: 3m
-  path: "kubernetes/namespaces/base/flux-system/addons/notifications"
+  path: "kubernetes/namespaces/base/flux-system/addons/repositories/oci"
   prune: true
   wait: false
   sourceRef:
     kind: GitRepository
     name: flux-system
-  decryption:
-    provider: sops

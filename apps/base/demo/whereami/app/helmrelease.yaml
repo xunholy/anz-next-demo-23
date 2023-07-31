@@ -12,7 +12,7 @@ spec:
       chart: whereami
       sourceRef:
         kind: HelmRepository
-        name: whereami-chart
+        name: google-sample-charts
         namespace: flux-system
       interval: 5m
   install:
