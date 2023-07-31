@@ -4,8 +4,8 @@ kind: RoleBinding
 metadata:
   labels:
     toolkit.fluxcd.io/tenant: platform-cicd
-  name: platform-cicd-reconciler
-  namespace: platform-github-ephemeral-system
+  name: team-alpha-reconciler
+  namespace: demo
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -13,26 +13,7 @@ roleRef:
 subjects:
 - apiGroup: rbac.authorization.k8s.io
   kind: User
-  name: gotk:platform-cicd-tenant:reconciler
+  name: gotk:team-alpha-tenant:reconciler
 - kind: ServiceAccount
-  name: platform-cicd
-  namespace: platform-cicd-tenant
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  labels:
-    toolkit.fluxcd.io/tenant: platform-cicd
-  name: platform-cicd-reconciler
-  namespace: platform-github-ephemeral-runners
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: cluster-admin
-subjects:
-- apiGroup: rbac.authorization.k8s.io
-  kind: User
-  name: gotk:platform-cicd-tenant:reconciler
-- kind: ServiceAccount
-  name: platform-cicd
-  namespace: platform-cicd-tenant
+  name: team-alpha
+  namespace: team-alpha-tenant
