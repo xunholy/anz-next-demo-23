@@ -41,7 +41,7 @@ spec:
   eventSeverity: info
   eventSources:
   - kind: Kustomization
-    name: '*'
+    name: 'cluster-01'
     namespace: flux-system
   providerRef:
     name: flux-system-dispatch
