@@ -13,4 +13,4 @@ spec:
   wait: true
   sourceRef:
     kind: GitRepository
-    name: tenants
+    name: tenant-alpha-repo

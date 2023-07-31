@@ -1,13 +1,22 @@
 ---
-apiVersion: source.toolkit.fluxcd.io/v1beta2
-kind: GitRepository
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
 metadata:
   name: tenants
   namespace: flux-system
 spec:
-  interval: 1m0s
-  ref:
-    branch: main
-  secretRef:
+  interval: 10m0s
+  prune: true
+  wait: false
+  force: false
+  path: ./kubernetes/tenants/overlays/cluster-01
+  sourceRef:
+    kind: GitRepository
     name: flux-system
-  url: https://github.com/xunholy/next-demo-01.git
+  postBuild:
+    substitute: {}
+    substituteFrom:
+      - kind: ConfigMap
+        name: cluster-config
+      - kind: Secret
+        name: cluster-secrets

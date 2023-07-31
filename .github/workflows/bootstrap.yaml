@@ -61,7 +61,7 @@ jobs:
 
     # The KUBECONFIG env var is automatically exported and picked up by kubectl.
     - id: 'get-pods'
-      run: 'kubectl get pods'
+      run: 'kubectl get pods -n flux-system'
 
     - name: 'Bootstrap FluxCD'
       id: bootstrap
