@@ -14,3 +14,4 @@ spec:
   sourceRef:
     kind: GitRepository
     name: tenant-alpha-repo
+    namespace: flux-system
