@@ -1,9 +1,7 @@
-name: "Bootstrap FluxCD"
+name: "Test Bootstrap FluxCD"
 
 on:
-  repository_dispatch:
-    # TODO: This currently need to be updated to match the cluster name however, needs to be dynamic in future.
-    types: [Kustomization/cluster-02.flux-system]
+  repository_dispatch: {}
   workflow_dispatch:
     inputs:
       projectID:
@@ -50,7 +48,7 @@ jobs:
       uses: 'google-github-actions/auth@v1'
       with:
         token_format: "access_token"
-        workload_identity_provider: 'projects/572968775626/locations/global/workloadIdentityPools/github-oidc-pool/providers/github-provider'
+        workload_identity_provider: 'projects/892666479770/locations/global/workloadIdentityPools/github-oidc-pool/providers/github-provider'
         service_account: 'github-oidc@anz-next-demo-23.iam.gserviceaccount.com'
 
     - id: 'get-credentials'

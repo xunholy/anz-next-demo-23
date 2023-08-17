@@ -6,25 +6,30 @@
 
 export PROJECT_ID=anz-next-demo-23
 export CLUSTER_NAME=cluster-00
-export CLUSTER_REGION=us-central1
+export CLUSTER_REGION=us-west1
 
-export GITHUB_TOKEN=<>
+# export GITHUB_TOKEN=<>
 
 export KCC_SERVICE_ACCOUNT_NAME=kcc-sa
 export SOPS_SERVICE_ACCOUNT_NAME=sops-sa
 
-gcloud auth login
-gcloud auth application-default login
-gcloud config set project $PROJECT_ID
+# gcloud auth login
+# gcloud auth application-default login
+# gcloud config set project $PROJECT_ID
 
 gcloud services enable \
   servicemanagement.googleapis.com \
   servicecontrol.googleapis.com \
   cloudresourcemanager.googleapis.com \
-  compute.googleapis.com container.googleapis.com \
+  compute.googleapis.com \
+  container.googleapis.com \
   containerregistry.googleapis.com \
   cloudbuild.googleapis.com \
-  cloudkms.googleapis.com
+  cloudkms.googleapis.com \
+  gkeconnect.googleapis.com \
+  gkehub.googleapis.com \
+  iam.googleapis.com \
+  mesh.googleapis.com
 
 # Setup a KCC service account with appropriate permissions.
 gcloud iam service-accounts create ${KCC_SERVICE_ACCOUNT_NAME}
@@ -73,6 +78,7 @@ gcloud container clusters get-credentials $CLUSTER_NAME \
     --region $CLUSTER_REGION \
     --project $PROJECT_ID
 
+# Add a one-time Github token to the cluster
 kubectl create secret generic github-token \
   --namespace=flux-system \
   --from-literal=token=$GITHUB_TOKEN \
@@ -82,12 +88,11 @@ kubectl create secret generic github-token \
 sops --encrypt --in-place kubernetes/namespaces/base/flux-system/addons/notifications/github/secret.enc.yaml
 
 # Bootstrap FluxCD
-# TODO:
 flux bootstrap github \
   --components-extra=image-reflector-controller,image-automation-controller \
   --owner="xUnholy" \
   --repository="next-demo-01" \
-  --path=kubernetes/clusters/cluster-00 \
+  --path=kubernetes/clusters/$CLUSTER_NAME \
   --branch="main" \
   --personal=true \
   --private=false
