@@ -9,7 +9,7 @@ on:
       projectID:
         type: string
         description: 'GCP Project ID'
-        default: 'kubecon-mgmt'
+        default: 'anz-next-demo-23'
         required: true
       clusterName:
         type: string
@@ -51,7 +51,7 @@ jobs:
       with:
         token_format: "access_token"
         workload_identity_provider: 'projects/572968775626/locations/global/workloadIdentityPools/github-oidc-pool/providers/github-provider'
-        service_account: 'github-oidc@kubecon-mgmt.iam.gserviceaccount.com'
+        service_account: 'github-oidc@anz-next-demo-23.iam.gserviceaccount.com'
 
     - id: 'get-credentials'
       uses: 'google-github-actions/get-gke-credentials@v1'

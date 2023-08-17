@@ -32,5 +32,5 @@ spec:
       name: github-oidc
   resourceRef:
     kind: Project
-    external: projects/kubecon-mgmt
+    external: projects/anz-next-demo-23
   role: roles/container.admin
