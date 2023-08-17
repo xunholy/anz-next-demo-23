@@ -1,4 +1,4 @@
-name: "Test Bootstrap FluxCD"
+name: "Bootstrap FluxCD"
 
 on:
   repository_dispatch: {}
