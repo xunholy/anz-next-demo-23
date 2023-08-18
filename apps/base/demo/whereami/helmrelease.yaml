@@ -48,6 +48,7 @@ spec:
             apiVersion: apps/v1
             metadata:
               name: whereami
+              namespace: demo
             spec:
               template:
                 spec:
