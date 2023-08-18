@@ -29,7 +29,12 @@ gcloud services enable \
   gkeconnect.googleapis.com \
   gkehub.googleapis.com \
   iam.googleapis.com \
-  mesh.googleapis.com
+  mesh.googleapis.com \
+  multiclusterservicediscovery.googleapis.com \
+  multiclusteringress.googleapis.com \
+  trafficdirector.googleapis.com \
+  anthos.googleapis.com \
+  dns.googleapis.com
 
 # Setup a KCC service account with appropriate permissions.
 gcloud iam service-accounts create ${KCC_SERVICE_ACCOUNT_NAME}
@@ -96,3 +101,23 @@ flux bootstrap github \
   --branch="main" \
   --personal=true \
   --private=false
+
+
+
+# Create Service Endpoint
+# TODO
+
+# Create public IP for XLB
+gcloud compute addresses create static-mci-ip --global
+gcloud compute addresses list
+
+# Create Certificate
+# TODO
+
+# Create Ingress Objects
+# TODO
+
+# Step 3 -> https://cloud.google.com/kubernetes-engine/docs/how-to/multi-cluster-services
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+    --member "serviceAccount:$PROJECT_ID.svc.id.goog[gke-mcs/gke-mcs-importer]" \
+    --role "roles/compute.networkViewer"
