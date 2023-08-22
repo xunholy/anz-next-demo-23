@@ -2,7 +2,7 @@ name: "Test Bootstrap FluxCD"
 
 on:
   repository_dispatch:
-    types: [Kustomization/*.flux-system]
+    types: [Kustomization/cluster-*.flux-system]
   workflow_dispatch:
     inputs:
       projectID:
