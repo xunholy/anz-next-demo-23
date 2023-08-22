@@ -1,7 +1,8 @@
 name: "Bootstrap FluxCD"
 
 on:
-  repository_dispatch: {}
+  repository_dispatch:
+    types: [Kustomization/cluster-*.flux-system]
   workflow_dispatch:
     inputs:
       projectID:
@@ -69,7 +70,7 @@ jobs:
         flux bootstrap github \
           --components-extra=image-reflector-controller,image-automation-controller \
           --owner="xunholy" \
-          --repository="next-demo-01" \
+          --repository="anz-next-demo-23" \
           --path=kubernetes/clusters/${{ steps.override.outputs.clusterName }}/ \
           --branch=main \
           --network-policy=true \

@@ -96,7 +96,7 @@ sops --encrypt --in-place kubernetes/namespaces/base/flux-system/addons/notifica
 flux bootstrap github \
   --components-extra=image-reflector-controller,image-automation-controller \
   --owner="xUnholy" \
-  --repository="next-demo-01" \
+  --repository="anz-next-demo-23" \
   --path=kubernetes/clusters/$CLUSTER_NAME \
   --branch="main" \
   --personal=true \
