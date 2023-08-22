@@ -102,8 +102,6 @@ flux bootstrap github \
   --personal=true \
   --private=false
 
-
-
 # Create Service Endpoint
 # TODO
 
