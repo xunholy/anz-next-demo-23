@@ -8,7 +8,7 @@ metadata:
     cnrm.cloud.google.com/project-id: anz-next-demo-23
 spec:
   enableAutopilot: true
-  location: us-east1
+  location: us-west1
   releaseChannel:
     channel: RAPID
   workloadIdentityConfig:
@@ -25,7 +25,7 @@ spec:
   location: global
   authority:
     # Issuer must contain a link to a valid JWT issuer. Your ContainerCluster is one. To use it, replace ${PROJECT_ID?} with your project ID.
-    issuer: https://container.googleapis.com/v1/projects/anz-next-demo-23/locations/us-east1/clusters/cluster-02
+    issuer: https://container.googleapis.com/v1/projects/anz-next-demo-23/locations/us-west1/clusters/cluster-02
   endpoint:
     gkeCluster:
       resourceRef:
@@ -65,4 +65,4 @@ spec:
   eventMetadata:
     project: "anz-next-demo-23"
     cluster: "cluster-02"
-    location: "us-east1"
+    location: "us-west1"
