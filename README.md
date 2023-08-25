@@ -39,11 +39,11 @@ The below showcases the collection of open-source solutions currently implemente
 
 ## 🛠️ Requirements
 
-Google Cloud Account with permission to create GKE clusters
-kubectl installed and configured
-gcloud CLI installed and configured
-FluxCD CLI tools
-YAML editing skills
+- Google Cloud Account with permission to create GKE clusters
+- [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl) CLI installed and configured
+- [gcloud](https://cloud.google.com/sdk/docs/install)  CLI installed and configured
+- [flux](https://fluxcd.io/flux/installation/#install-the-flux-cli) CLI tools
+- YAML editing skills
 
 ## 🚀 Getting Started
 
