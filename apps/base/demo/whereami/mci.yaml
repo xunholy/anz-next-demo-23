@@ -6,6 +6,7 @@ metadata:
   annotations:
     # Hardcoded IP address for the ingress GCLB
     networking.gke.io/static-ip: 34.120.31.190
+    networking.gke.io/pre-shared-certs: "whereamicert"
 spec:
   template:
     spec:
