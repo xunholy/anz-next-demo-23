@@ -43,9 +43,14 @@ The below showcases the collection of open-source solutions currently implemente
 - [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl) CLI installed and configured
 - [gcloud](https://cloud.google.com/sdk/docs/install)  CLI installed and configured
 - [flux](https://fluxcd.io/flux/installation/#install-the-flux-cli) CLI tools
+- [sops](https://github.com/getsops/sops) CLI installed and configured
 - YAML editing skills
 
 ## 🚀 Getting Started
+
+Before you begin, check that all GCP project references are updated in the repository to your corrosponding GCP project ID.
+
+Additionally, after you have completed the following steps you will need to update the `GITHUB_TOKEN` stored in a SOPS encrypted kubernetes [secret](./kubernetes/namespaces/base/flux-system/addons/notifications/github/secret.enc.yaml).
 
 1. Fork and clone this repository
 
