@@ -103,18 +103,31 @@ flux bootstrap github \
   --personal=true \
   --private=false
 
-# Create Service Endpoint
-# TODO
-
 # Create public IP for XLB
-gcloud compute addresses create static-mci-ip --global
-gcloud compute addresses list
+gcloud compute addresses create static-mci-ip --global --project $PROJECT_ID
+export STATIC_MCI_IP=`gcloud compute addresses describe static-mci-ip --global --format="value(address)"`
+echo -e "GCLB_IP is $STATIC_MCI_IP"
+
+# Create Service Endpoint
+cat <<EOF > demo-openapi.yaml
+swagger: "2.0"
+info:
+  description: "Cloud Endpoints DNS"
+  title: "Cloud Endpoints DNS"
+  version: "1.0.0"
+paths: {}
+host: "next23demo.endpoints.${PROJECT_ID}.cloud.goog"
+x-google-endpoints:
+- name: "next23demo.endpoints.${PROJECT_ID}.cloud.goog"
+  target: "${STATIC_MCI_IP}"
+EOF
+gcloud endpoints services deploy demo-openapi.yaml --project $PROJECT_ID
 
 # Create Certificate
-# TODO
-
-# Create Ingress Objects
-# TODO
+gcloud compute ssl-certificates create whereamicert \
+  --project $PROJECT_ID \
+  --domains=next23demo.endpoints.$PROJECT_ID.cloud.goog \
+  --global
 
 # Step 3 -> https://cloud.google.com/kubernetes-engine/docs/how-to/multi-cluster-services
 gcloud projects add-iam-policy-binding $PROJECT_ID \
