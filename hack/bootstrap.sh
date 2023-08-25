@@ -4,18 +4,19 @@
 # https://github.com/getsops/sops#23encrypting-using-gcp-kms
 # https://fluxcd.io/flux/guides/mozilla-sops/#google-cloud
 
-export PROJECT_ID=anz-next-demo-23
+# Management GKE cluster configuration
 export CLUSTER_NAME=cluster-00
 export CLUSTER_REGION=us-west1
-
-# export GITHUB_TOKEN=<>
-
+# FluxCD configuration
+export DEFUALT_GITHUB_BRANCH=main
+export DEFUALT_GITHUB_REPO=anz-next-demo-23
+# GCP Tooling Service Accounts
 export KCC_SERVICE_ACCOUNT_NAME=kcc-sa
 export SOPS_SERVICE_ACCOUNT_NAME=sops-sa
 
-# gcloud auth login
-# gcloud auth application-default login
-# gcloud config set project $PROJECT_ID
+gcloud auth login
+gcloud auth application-default login
+gcloud config set project $PROJECT_ID
 
 gcloud services enable \
   servicemanagement.googleapis.com \
@@ -95,10 +96,10 @@ sops --encrypt --in-place kubernetes/namespaces/base/flux-system/addons/notifica
 # Bootstrap FluxCD
 flux bootstrap github \
   --components-extra=image-reflector-controller,image-automation-controller \
-  --owner="xUnholy" \
-  --repository="anz-next-demo-23" \
+  --owner="$GITHUB_USER" \
+  --repository="$DEFUALT_GITHUB_REPO" \
   --path=kubernetes/clusters/$CLUSTER_NAME \
-  --branch="main" \
+  --branch="$DEFUALT_GITHUB_BRANCH" \
   --personal=true \
   --private=false
 

@@ -1,0 +1,73 @@
+# ANZ Bank - Google Next Demo 2023
+
+This is an example repository that demonstrates how to use GitOps to create GKE (Google Kubernetes Engine) clusters on demand, register them to a Fleet, and bootstrap them with FluxCD.
+
+Once the newly created Fleet clusters are bootstrapped with FluxCD, they will automatically begin to synchronize all GKE cluster platform configurations and application tenant configurations.
+
+## 📖 Table of contents
+
+- [ANZ Bank - Google Next Demo 2023](#anz-bank---google-next-demo-2023)
+  - [📖 Table of contents](#-table-of-contents)
+  - [📁 Directories](#-directories)
+  - [🖥️ Technology Stack](#️-technology-stack)
+  - [🛠️ Requirements](#️-requirements)
+  - [🚀 Getting Started](#-getting-started)
+  - [📄 License](#-license)
+
+## 📁 Directories
+
+This Git repository contains the following directories.
+
+```bash
+📁 apps             # Example of a application operators configuration
+📁 hack             # Directory for scripts
+📁 kubernetes       # Example of a platform operators configuration
+├─📁 clusters       # FluxCD cluster installation
+├─📁 namespaces     # Platform tooling and configuration
+└─📁 tenants        # Teams onboarded as tenants
+```
+
+## 🖥️ Technology Stack
+
+The below showcases the collection of open-source solutions currently implemented in the cluster. Each of these components has been documented, and their deployment is managed using FluxCD, which adheres to GitOps principles.
+
+|                                                                                                                             | Name                                             | Description                                                                                                                |
+| --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
+| <img width="32" src="https://raw.githubusercontent.com/cncf/artwork/master/projects/kubernetes/icon/color/kubernetes-icon-color.svg">       | [Kubernetes](https://kubernetes.io/)             | An open-source system for automating deployment, scaling, and management of containerized applications                     |
+| <img width="32" src="https://raw.githubusercontent.com/cncf/artwork/master/projects/flux/icon/color/flux-icon-color.svg">                   | [FluxCD](https://fluxcd.io/)                     | GitOps tool for deploying applications to Kubernetes                                                                       |
+| NA     | [Config Connector](https://github.com/GoogleCloudPlatform/k8s-config-connector)             | Manage GCP GCP resources declaratively using Kubernetes-style configuration |
+
+## 🛠️ Requirements
+
+Google Cloud Account with permission to create GKE clusters
+kubectl installed and configured
+gcloud CLI installed and configured
+FluxCD CLI tools
+YAML editing skills
+
+## 🚀 Getting Started
+
+1. Fork and clone this repository
+
+```bash
+git clone https://github.com/<user/org>/anz-next-demo-23.git
+```
+
+2. Navigate to the cloned directory and run the setup script
+
+```bash
+export PROJECT_ID=<YOUR PROJECT ID>
+export GITHUB_TOKEN=<YOUR GITHUB TOKEN>
+export GITHUB_USER=<YOUR GITHUB USER>
+
+cd anz-next-demo-23
+./hack/bootstrap.sh
+```
+
+**Note:** *Change the exported variables to the appropriate values; Additional values can be adapted in the [bootstrap.sh](./hack/bootstrap.sh) script.*
+
+3. Follow the on-screen instructions to set up your GKE cluster
+
+## 📄 License
+
+This repository is [Apache 2.0 licensed](./LICENSE)
