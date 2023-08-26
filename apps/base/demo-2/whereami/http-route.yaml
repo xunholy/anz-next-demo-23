@@ -10,7 +10,6 @@ spec:
   - "demo-2.runk8s.dev"
   parentRefs:
   - name: external-http
-    namespace: gateways
   rules:
   - backendRefs:
     - group: net.gke.io
