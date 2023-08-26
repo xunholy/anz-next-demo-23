@@ -17,3 +17,10 @@ spec:
         selector:
           matchLabels:
             bravo-team-shared-gateway-access: "true"
+    tls:
+      mode: Terminate
+      options:
+        networking.gke.io/pre-shared-certs: team-bravo-tenant-cert
+  addresses:
+    - type: NamedAddress
+      value: team-bravo-tenant-api
