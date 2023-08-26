@@ -7,7 +7,7 @@ metadata:
     gateway: external-http
 spec:
   hostnames:
-  - "demo-2.runk8s.dev"
+  - "team-bravo.endpoints.anz-next-demo-23.cloud.goog"
   parentRefs:
   - name: bravo-team-external-http
     namespace: team-bravo-tenant
