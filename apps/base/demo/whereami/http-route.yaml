@@ -4,12 +4,13 @@ metadata:
   name: demo-route
   namespace: demo
   labels:
-    gateway: external-http
+    gateway: alpha-team-external-http
 spec:
   hostnames:
   - "demo.runk8s.dev"
   parentRefs:
-  - name: external-http
+  - name: team-bravo-external-http
+    namespace: team-alpha-tenant
   rules:
   - backendRefs:
     - group: net.gke.io
