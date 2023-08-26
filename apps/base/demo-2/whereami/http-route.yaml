@@ -9,7 +9,8 @@ spec:
   hostnames:
   - "demo-2.runk8s.dev"
   parentRefs:
-  - name: external-http
+  - name: bravo-team-external-http
+    namespace: team-bravo-tenant
   rules:
   - backendRefs:
     - group: net.gke.io
