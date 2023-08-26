@@ -1,0 +1,20 @@
+kind: HTTPRoute
+apiVersion: gateway.networking.k8s.io/v1beta1
+metadata:
+  name: demo-2-route
+  namespace: demo-2
+  labels:
+    gateway: external-http
+spec:
+  hostnames:
+  - "demo-2.runk8s.dev"
+  parentRefs:
+  - kind: Gateway
+    name: external-http
+    namespace: gateways
+  rules:
+  - backendRefs:
+    - group: net.gke.io
+      kind: ServiceImport
+      name: whereami
+      port: 8080
