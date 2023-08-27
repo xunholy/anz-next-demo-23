@@ -1,0 +1,26 @@
+kind: Gateway
+apiVersion: gateway.networking.k8s.io/v1beta1
+metadata:
+  name: team-bravo-external-http
+  namespace: team-alpha-tenant
+spec:
+  gatewayClassName: gke-l7-global-external-managed-mc
+  listeners:
+  - name: https
+    protocol: HTTPS
+    port: 443
+    allowedRoutes:
+      kinds:
+      - kind: HTTPRoute
+      namespaces:
+        from: Selector
+        selector:
+          matchLabels:
+            alpha-team-shared-gateway-access: "true"
+    tls:
+      mode: Terminate
+      options:
+        networking.gke.io/pre-shared-certs: team-alpha-tenant-cert
+  addresses:
+    - type: NamedAddress
+      value: team-alpha-tenant-api

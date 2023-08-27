@@ -1,0 +1,19 @@
+kind: HTTPRoute
+apiVersion: gateway.networking.k8s.io/v1beta1
+metadata:
+  name: demo-route
+  namespace: demo
+  labels:
+    gateway: alpha-team-external-http
+spec:
+  hostnames:
+  - "team-alpha.endpoints.anz-next-demo-23.cloud.goog"
+  parentRefs:
+  - name: team-bravo-external-http
+    namespace: team-alpha-tenant
+  rules:
+  - backendRefs:
+    - group: net.gke.io
+      kind: ServiceImport
+      name: whereami
+      port: 80
