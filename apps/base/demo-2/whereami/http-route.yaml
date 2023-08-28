@@ -6,6 +6,8 @@ metadata:
   namespace: demo-2
   labels:
     gateway: external-http
+    bravo-team-shared-gateway-access: "true"
+
 spec:
   hostnames:
   - "team-bravo.endpoints.anz-next-demo-23.cloud.goog"

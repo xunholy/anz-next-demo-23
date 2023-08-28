@@ -6,6 +6,7 @@ metadata:
   namespace: demo
   labels:
     gateway: alpha-team-external-http
+    alpha-team-shared-gateway-access: "true"
 spec:
   hostnames:
   - "team-alpha.endpoints.anz-next-demo-23.cloud.goog"
