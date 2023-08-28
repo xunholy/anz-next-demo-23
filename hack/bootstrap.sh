@@ -168,9 +168,14 @@ gcloud compute ssl-certificates create whereamicert \
   --domains=next23demo.endpoints.$PROJECT_ID.cloud.goog \
   --global
 
-gcloud compute ssl-certificates create team-alpha-tenant-cert --project anz-next-demo-23 \
+gcloud compute ssl-certificates create alpha-tenant-cert --project anz-next-demo-23 \
       --project $PROJECT_ID \
-      --domains=demo.runk8s.dev \
+      --domains="team-alpha.endpoints.$PROJECT_ID.cloud.goog" \
+      --global
+
+gcloud compute ssl-certificates create bravo-tenant-cert --project anz-next-demo-23 \
+      --project $PROJECT_ID \
+      --domains="team-bravo.endpoints.$PROJECT_ID.cloud.goog" \
       --global
 
 # Step 3 -> https://cloud.google.com/kubernetes-engine/docs/how-to/multi-cluster-services
