@@ -20,7 +20,7 @@ spec:
     tls:
       mode: Terminate
       options:
-        networking.gke.io/pre-shared-certs: team-alpha-tenant-cert
+        networking.gke.io/pre-shared-certs: alpha-tenant-cert
   addresses:
     - type: NamedAddress
       value: team-alpha-tenant-api
