@@ -2,8 +2,8 @@ kind: Gateway
 apiVersion: gateway.networking.k8s.io/v1beta1
 metadata:
   name: team-alpha-external-http
-  namespace: team-alpha-tenant
-  # namespace: demo
+  # namespace: team-alpha-tenant
+  namespace: demo
 spec:
   gatewayClassName: gke-l7-global-external-managed-mc
   listeners:
@@ -13,11 +13,11 @@ spec:
     allowedRoutes:
       kinds:
       - kind: HTTPRoute
-      namespaces:
-        from: Selector
-        selector:
-          matchLabels:
-            alpha-team-shared-gateway-access: "true"
+      # namespaces:
+      #   from: Selector
+      #   selector:
+      #     matchLabels:
+      #       alpha-team-shared-gateway-access: "true"
     tls:
       mode: Terminate
       options:

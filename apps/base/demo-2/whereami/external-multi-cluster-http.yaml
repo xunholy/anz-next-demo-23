@@ -3,7 +3,7 @@ apiVersion: gateway.networking.k8s.io/v1beta1
 metadata:
   name: bravo-team-external-http
   namespace: team-bravo-tenant
-  # namespace: demo-2
+  namespace: demo-2
 spec:
   gatewayClassName: gke-l7-global-external-managed-mc
   listeners:
@@ -13,11 +13,11 @@ spec:
     allowedRoutes:
       kinds:
       - kind: HTTPRoute
-      namespaces:
-        from: Selector
-        selector:
-          matchLabels:
-            bravo-team-shared-gateway-access: "true"
+      # namespaces:
+      #   from: Selector
+      #   selector:
+      #     matchLabels:
+      #       bravo-team-shared-gateway-access: "true"
     tls:
       mode: Terminate
       options:
