@@ -1,19 +1,19 @@
-kind: HTTPRoute
-apiVersion: gateway.networking.k8s.io/v1beta1
-metadata:
-  name: demo-2-route
-  namespace: demo-2
-  labels:
-    gateway: external-http
-spec:
-  hostnames:
-  - "team-bravo.endpoints.anz-next-demo-23.cloud.goog"
-  parentRefs:
-  - name: bravo-team-external-http
-    namespace: team-bravo-tenant
-  rules:
-  - backendRefs:
-    - group: net.gke.io
-      kind: ServiceImport
-      name: whereami
-      port: 80
+# kind: HTTPRoute
+# apiVersion: gateway.networking.k8s.io/v1beta1
+# metadata:
+#   name: demo-2-route
+#   namespace: demo-2
+#   labels:
+#     gateway: external-http
+# spec:
+#   hostnames:
+#   - "team-bravo.endpoints.anz-next-demo-23.cloud.goog"
+#   parentRefs:
+#   - name: bravo-team-external-http
+#     namespace: team-bravo-tenant
+#   rules:
+#   - backendRefs:
+#     - group: net.gke.io
+#       kind: ServiceImport
+#       name: whereami
+#       port: 80
