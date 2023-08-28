@@ -9,7 +9,7 @@ spec:
   hostnames:
   - "team-alpha.endpoints.anz-next-demo-23.cloud.goog"
   parentRefs:
-  - name: team-bravo-external-http
+  - name: team-alpha-external-http
     namespace: team-alpha-tenant
   rules:
   - backendRefs:
