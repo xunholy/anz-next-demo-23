@@ -31,11 +31,11 @@ This Git repository contains the following directories.
 
 The below showcases the collection of open-source solutions currently implemented in the cluster. Each of these components has been documented, and their deployment is managed using FluxCD, which adheres to GitOps principles.
 
-|                                                                                                                             | Name                                             | Description                                                                                                                |
-| --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
-| <img width="32" src="https://raw.githubusercontent.com/cncf/artwork/master/projects/kubernetes/icon/color/kubernetes-icon-color.svg">       | [Kubernetes](https://kubernetes.io/)             | An open-source system for automating deployment, scaling, and management of containerized applications                     |
-| <img width="32" src="https://raw.githubusercontent.com/cncf/artwork/master/projects/flux/icon/color/flux-icon-color.svg">                   | [FluxCD](https://fluxcd.io/)                     | GitOps tool for deploying applications to Kubernetes                                                                       |
-| NA     | [Config Connector](https://github.com/GoogleCloudPlatform/k8s-config-connector)             | Manage GCP GCP resources declaratively using Kubernetes-style configuration |
+|                                                                                                                                       | Name                                                                            | Description                                                                                            |
+| ------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| <img width="32" src="https://raw.githubusercontent.com/cncf/artwork/master/projects/kubernetes/icon/color/kubernetes-icon-color.svg"> | [Kubernetes](https://kubernetes.io/)                                            | An open-source system for automating deployment, scaling, and management of containerized applications |
+| <img width="32" src="https://raw.githubusercontent.com/cncf/artwork/master/projects/flux/icon/color/flux-icon-color.svg">             | [FluxCD](https://fluxcd.io/)                                                    | GitOps tool for deploying applications to Kubernetes                                                   |
+| NA                                                                                                                                    | [Config Connector](https://github.com/GoogleCloudPlatform/k8s-config-connector) | Manage GCP GCP resources declaratively using Kubernetes-style configuration                            |
 
 ## 🛠️ Requirements
 
@@ -50,7 +50,7 @@ The below showcases the collection of open-source solutions currently implemente
 
 Before you begin, check that all GCP project references are updated in the repository to your corrosponding GCP project ID.
 
-Additionally, after you have completed the following steps you will need to update the `GITHUB_TOKEN` stored in a SOPS encrypted kubernetes [secret](./kubernetes/namespaces/base/flux-system/addons/notifications/github/secret.enc.yaml).
+Additionally, worth noting that once you have completed the following steps the `GITHUB_TOKEN` will be stored in a SOPS encrypted kubernetes [secret](./kubernetes/namespaces/base/flux-system/addons/notifications/github/secret.enc.yaml).
 
 1. Fork and clone this repository
 
