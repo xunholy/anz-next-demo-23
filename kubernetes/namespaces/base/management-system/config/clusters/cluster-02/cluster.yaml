@@ -30,7 +30,7 @@ spec:
     gkeCluster:
       resourceRef:
         name: cluster-02
----
+# ---
 # apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
 # kind: GKEHubFeature
 # metadata:
