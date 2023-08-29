@@ -6,6 +6,7 @@ metadata:
   labels:
     toolkit.fluxcd.io/tenant: team-alpha
     kustomize.toolkit.fluxcd.io/prune: disabled
+    alpha-team-shared-gateway-access: "true"
 ---
 apiVersion: v1
 kind: Namespace
@@ -14,3 +15,4 @@ metadata:
   labels:
     toolkit.fluxcd.io/tenant: team-alpha
     kustomize.toolkit.fluxcd.io/prune: disabled
+    alpha-team-shared-gateway-access: "true"
