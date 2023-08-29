@@ -12,14 +12,6 @@ spec:
     protocol: HTTPS
     port: 443
     allowedRoutes:
-      # namespaces:
-      #   from:
-      #   selector:
-      #     matchExpressions:
-      #     - key: kubernetes.io/metadata.name
-      #       operator: In
-      #       values:
-      #       - demo
       namespaces:
         from: Selector
         selector:
