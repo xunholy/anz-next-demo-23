@@ -4,8 +4,6 @@ kind: HTTPRoute
 metadata:
   name: demo-2-route
   namespace: demo-2
-  labels:
-    gateway: external-http
 spec:
   hostnames:
   - "team-bravo.endpoints.anz-next-demo-23.cloud.goog"
