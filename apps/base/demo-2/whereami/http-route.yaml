@@ -11,7 +11,7 @@ spec:
   - "team-bravo.endpoints.anz-next-demo-23.cloud.goog"
   parentRefs:
   - name: bravo-team-external-http
-    # namespace: team-bravo-tenant
+    namespace: team-bravo-tenant
   rules:
   - backendRefs:
     - group: net.gke.io
