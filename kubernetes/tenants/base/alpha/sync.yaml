@@ -19,7 +19,8 @@ metadata:
   namespace: team-alpha-tenant
 spec:
   serviceAccountName: team-alpha
-  interval: 5m
+  interval: 5m0s
+  retryInterval: 2m0s
   sourceRef:
     kind: GitRepository
     name: tenant-alpha-repo

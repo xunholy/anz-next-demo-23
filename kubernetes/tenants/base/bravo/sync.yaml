@@ -19,7 +19,8 @@ metadata:
   namespace: team-bravo-tenant
 spec:
   serviceAccountName: team-bravo
-  interval: 5m
+  interval: 5m0s
+  retryInterval: 2m0s
   sourceRef:
     kind: GitRepository
     name: tenant-bravo-repo
