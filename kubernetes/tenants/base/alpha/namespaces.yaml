@@ -4,7 +4,7 @@ kind: Namespace
 metadata:
   name: demo
   labels:
-    toolkit.fluxcd.io/tenant: team-alpha
+    # toolkit.fluxcd.io/tenant: team-alpha
     kustomize.toolkit.fluxcd.io/prune: disabled
     alpha-team-shared-gateway-access: "true"
 ---
@@ -13,6 +13,6 @@ kind: Namespace
 metadata:
   name: new-demo
   labels:
-    toolkit.fluxcd.io/tenant: team-alpha
+    # toolkit.fluxcd.io/tenant: team-alpha
     kustomize.toolkit.fluxcd.io/prune: disabled
     alpha-team-shared-gateway-access: "true"
