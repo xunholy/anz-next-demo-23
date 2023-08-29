@@ -18,7 +18,7 @@ metadata:
   name: tenant-alpha
   namespace: team-alpha-tenant
 spec:
-  serviceAccountName: team-alpha
+  # serviceAccountName: team-alpha
   interval: 5m0s
   retryInterval: 2m0s
   sourceRef:

@@ -18,7 +18,7 @@ metadata:
   name: tenant-bravo
   namespace: team-bravo-tenant
 spec:
-  serviceAccountName: team-bravo
+  # serviceAccountName: team-bravo
   interval: 5m0s
   retryInterval: 2m0s
   sourceRef:
