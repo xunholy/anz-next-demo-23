@@ -3,7 +3,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   labels:
-    toolkit.fluxcd.io/tenant: platform-cicd
+    toolkit.fluxcd.io/tenant: team-bravo
   name: team-bravo-reconciler
   namespace: demo-2
 roleRef:
