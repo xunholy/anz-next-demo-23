@@ -1,9 +1,10 @@
-kind: Gateway
+---
 apiVersion: gateway.networking.k8s.io/v1beta1
+kind: Gateway
 metadata:
-  name: bravo-team-external-http
-  # namespace: team-bravo-tenant
-  namespace: demo-2
+  name: team-alpha-external-http
+  # namespace: team-alpha-tenant
+  namespace: demo
 spec:
   gatewayClassName: gke-l7-global-external-managed-mc
   listeners:
@@ -17,11 +18,11 @@ spec:
       #   from: Selector
       #   selector:
       #     matchLabels:
-      #       bravo-team-shared-gateway-access: "true"
+      #       alpha-team-shared-gateway-access: "true"
     tls:
       mode: Terminate
       options:
-        networking.gke.io/pre-shared-certs: bravo-tenant-cert
+        networking.gke.io/pre-shared-certs: alpha-tenant-cert
   addresses:
     - type: NamedAddress
-      value: team-bravo-tenant-api
+      value: team-alpha-tenant-api
