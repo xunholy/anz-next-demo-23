@@ -1,4 +1,4 @@
-# ANZ Bank - Google Next Demo 2023
+# Google Next Demo 2023
 
 This is an example repository that demonstrates how to use GitOps to create GKE (Google Kubernetes Engine) clusters on demand, register them to a Fleet, and bootstrap them with FluxCD.
 
@@ -6,7 +6,7 @@ Once the newly created Fleet clusters are bootstrapped with FluxCD, they will au
 
 ## 📖 Table of contents
 
-- [ANZ Bank - Google Next Demo 2023](#anz-bank---google-next-demo-2023)
+- [Google Next Demo 2023](#google-next-demo-2023)
   - [📖 Table of contents](#-table-of-contents)
   - [📁 Directories](#-directories)
   - [🖥️ Technology Stack](#️-technology-stack)
@@ -31,11 +31,12 @@ This Git repository contains the following directories.
 
 The below showcases the collection of open-source solutions currently implemented in the cluster. Each of these components has been documented, and their deployment is managed using FluxCD, which adheres to GitOps principles.
 
-|                                                                                                                                       | Name                                                                            | Description                                                                                            |
-| ------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| <img width="32" src="https://raw.githubusercontent.com/cncf/artwork/master/projects/kubernetes/icon/color/kubernetes-icon-color.svg"> | [Kubernetes](https://kubernetes.io/)                                            | An open-source system for automating deployment, scaling, and management of containerized applications |
-| <img width="32" src="https://raw.githubusercontent.com/cncf/artwork/master/projects/flux/icon/color/flux-icon-color.svg">             | [FluxCD](https://fluxcd.io/)                                                    | GitOps tool for deploying applications to Kubernetes                                                   |
-| NA                                                                                                                                    | [Config Connector](https://github.com/GoogleCloudPlatform/k8s-config-connector) | Manage GCP GCP resources declaratively using Kubernetes-style configuration                            |
+|                                                                                                                                       | Name                                                                            | Description                                                                                                                                                      |
+| ------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <img width="32" src="https://raw.githubusercontent.com/cncf/artwork/master/projects/kubernetes/icon/color/kubernetes-icon-color.svg"> | [Kubernetes](https://kubernetes.io/)                                            | An open-source system for automating deployment, scaling, and management of containerized applications                                                           |
+| <img width="32" src="https://raw.githubusercontent.com/cncf/artwork/master/projects/flux/icon/color/flux-icon-color.svg">             | [FluxCD](https://fluxcd.io/)                                                    | GitOps tool for deploying applications to Kubernetes                                                                                                             |
+| NA                                                                                                                                    | [Config Connector](https://github.com/GoogleCloudPlatform/k8s-config-connector) | Manage GCP GCP resources declaratively using Kubernetes-style configuration                                                                                      |
+| NA                                                                                                                                    | [Gateway API](https://gateway-api.sigs.k8s.io/guides/)                          | Kubernetes service networking through expressive, extensible, and role-oriented interfaces that are implemented by many vendors and have broad industry support. |
 
 ## 🛠️ Requirements
 
