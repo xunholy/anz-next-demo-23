@@ -13,7 +13,11 @@ spec:
   - name: team-alpha-external-http
     namespace: team-alpha-tenant
   rules:
-  - backendRefs:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /newdemo
+    backendRefs:
     - group: net.gke.io
       kind: ServiceImport
       name: whereami
