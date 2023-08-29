@@ -6,3 +6,11 @@ metadata:
   labels:
     toolkit.fluxcd.io/tenant: team-alpha
     kustomize.toolkit.fluxcd.io/prune: disabled
+# ---
+# apiVersion: v1
+# kind: Namespace
+# metadata:
+#   name: new-demo
+#   labels:
+#     toolkit.fluxcd.io/tenant: team-alpha
+#     kustomize.toolkit.fluxcd.io/prune: disabled
