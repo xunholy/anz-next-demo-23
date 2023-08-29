@@ -33,3 +33,7 @@ patches:
       kind: Kustomization
       name: flux-system
       namespace: flux-system
+  - target:
+      kind: Deployment
+      labelSelector: app.kubernetes.io/part-of=flux
+    path: ../../patches/deployment.yaml
