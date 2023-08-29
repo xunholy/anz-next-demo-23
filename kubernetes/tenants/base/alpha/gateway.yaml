@@ -12,19 +12,19 @@ spec:
     protocol: HTTPS
     port: 443
     allowedRoutes:
-      namespaces:
-        from:
-        selector:
-          matchExpressions:
-          - key: kubernetes.io/metadata.name
-            operator: In
-            values:
-            - demo
       # namespaces:
-      #   from: Selector
+      #   from:
       #   selector:
-      #     matchLabels:
-      #       alpha-team-shared-gateway-access: "true"
+      #     matchExpressions:
+      #     - key: kubernetes.io/metadata.name
+      #       operator: In
+      #       values:
+      #       - demo
+      namespaces:
+        from: Selector
+        selector:
+          matchLabels:
+            alpha-team-shared-gateway-access: "true"
     tls:
       mode: Terminate
       options:
