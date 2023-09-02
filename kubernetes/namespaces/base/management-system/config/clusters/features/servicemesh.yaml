@@ -1,0 +1,11 @@
+apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
+kind: GKEHubFeature
+metadata:
+  name: gkehubfeature-servicemesh
+  namespace: management-system
+  annotations:
+    cnrm.cloud.google.com/project-id: anz-next-demo-23
+spec:
+  location: global
+  # The resourceID must be "servicemesh" if you want to use Anthos Service Mesh feature.
+  resourceID: servicemesh
