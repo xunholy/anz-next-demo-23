@@ -6,7 +6,7 @@ metadata:
   namespace: demo-2
 spec:
   hostnames:
-  - "team-bravo.endpoints.anz-next-demo-23.cloud.goog"
+  - "team-bravo.endpoints.gitops-clusters.cloud.goog"
   parentRefs:
   - name: bravo-team-external-http
     namespace: team-bravo-tenant

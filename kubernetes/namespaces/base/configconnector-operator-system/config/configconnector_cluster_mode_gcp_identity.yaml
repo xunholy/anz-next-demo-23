@@ -5,4 +5,4 @@ metadata:
   name: configconnector.core.cnrm.cloud.google.com
 spec:
   mode: cluster
-  googleServiceAccount: kcc-sa@anz-next-demo-23.iam.gserviceaccount.com
+  googleServiceAccount: kcc-sa@gitops-clusters.iam.gserviceaccount.com

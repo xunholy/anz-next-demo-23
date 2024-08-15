@@ -11,7 +11,7 @@ spec:
     branch: main
   secretRef:
     name: flux-system
-  url: ssh://git@github.com/xUnholy/anz-next-demo-23
+  url: ssh://git@github.com/olga-mir/anz-next-demo-23
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
