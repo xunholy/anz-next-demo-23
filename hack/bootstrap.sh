@@ -4,6 +4,21 @@
 # https://github.com/getsops/sops#23encrypting-using-gcp-kms
 # https://fluxcd.io/flux/guides/mozilla-sops/#google-cloud
 
+set -eou pipefail
+
+if ! command -v sops &> /dev/null; then
+    echo "sops must be installed" && exit 1
+fi
+
+if ! command -v flux &> /dev/null; then
+    echo "flux must be installed." && exit 1
+fi
+
+if [ -z "$GITHUB_USER" ] || \
+   [ -z "$GITHUB_TOKEN" ]; then
+  echo "Error required env variables are not set" && exit 1
+fi
+
 # Management GKE cluster configuration
 export CLUSTER_NAME=cluster-00
 export CLUSTER_REGION=us-west1
@@ -13,6 +28,7 @@ export DEFUALT_GITHUB_REPO=anz-next-demo-23
 # GCP Tooling Service Accounts
 export KCC_SERVICE_ACCOUNT_NAME=kcc-sa
 export SOPS_SERVICE_ACCOUNT_NAME=sops-sa
+export DEMO_NAME="gitops-gke"
 
 gcloud auth login
 gcloud auth application-default login
@@ -125,9 +141,9 @@ info:
   title: "Cloud Endpoints DNS"
   version: "1.0.0"
 paths: {}
-host: "next23demo.endpoints.${PROJECT_ID}.cloud.goog"
+host: "$DEMO_NAME.endpoints.${PROJECT_ID}.cloud.goog"
 x-google-endpoints:
-- name: "next23demo.endpoints.${PROJECT_ID}.cloud.goog"
+- name: "$DEMO_NAME.endpoints.${PROJECT_ID}.cloud.goog"
   target: "${STATIC_MCI_IP}"
 EOF
 gcloud endpoints services deploy demo-openapi.yaml --project $PROJECT_ID
@@ -165,15 +181,15 @@ gcloud endpoints services deploy bravo-openapi.yaml --project $PROJECT_ID
 # Create Certificate
 gcloud compute ssl-certificates create whereamicert \
   --project $PROJECT_ID \
-  --domains=next23demo.endpoints.$PROJECT_ID.cloud.goog \
+  --domains=$DEMO_NAME.endpoints.$PROJECT_ID.cloud.goog \
   --global
 
-gcloud compute ssl-certificates create alpha-tenant-cert --project anz-next-demo-23 \
+gcloud compute ssl-certificates create alpha-tenant-cert --project $DEFAULT_GITHUB_REPO \
       --project $PROJECT_ID \
       --domains="team-alpha.endpoints.$PROJECT_ID.cloud.goog" \
       --global
 
-gcloud compute ssl-certificates create bravo-tenant-cert --project anz-next-demo-23 \
+gcloud compute ssl-certificates create bravo-tenant-cert --project $DEFAULT_GITHUB_REPO \
       --project $PROJECT_ID \
       --domains="team-bravo.endpoints.$PROJECT_ID.cloud.goog" \
       --global
