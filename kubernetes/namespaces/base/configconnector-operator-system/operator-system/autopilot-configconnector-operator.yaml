@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Namespace
 metadata:
   annotations:
-    cnrm.cloud.google.com/operator-version: 1.106.0
+    cnrm.cloud.google.com/operator-version: 1.121.0
   labels:
     cnrm.cloud.google.com/operator-system: "true"
   name: configconnector-operator-system
@@ -11,9 +11,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/operator-version: 1.106.0
-    controller-gen.kubebuilder.io/version: v0.10.0
-  creationTimestamp: null
+    cnrm.cloud.google.com/operator-version: 1.121.0
+    controller-gen.kubebuilder.io/version: v0.14.0
   labels:
     cnrm.cloud.google.com/operator-system: "true"
   name: configconnectorcontexts.core.cnrm.cloud.google.com
@@ -42,42 +41,78 @@ spec:
           API
         properties:
           apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
-              of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
             type: string
           kind:
-            description: 'Kind is a string value representing the REST resource this
-              object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
             type: string
           metadata:
             type: object
           spec:
             description: ConfigConnectorContextSpec defines the desired state of ConfigConnectorContext
             properties:
+              actuationMode:
+                description: |-
+                  The actuation mode of Config Connector controls how resources are actuated onto the cloud provider.
+                  This can be either 'Reconciling' or 'Paused'. The default is 'Reconciling' where resources get actuated.
+                  In 'Paused', k8s resources are still reconciled with the api server but not actuated onto the cloud provider.
+                enum:
+                - Reconciling
+                - Paused
+                type: string
               billingProject:
-                description: Specifies the project to use for preconditions, quota
-                  and billing. Should only be used when requestProjectPolicy is set
-                  to BILLING_PROJECT.
+                description: |-
+                  Specifies the project to use for preconditions, quota and billing.
+                  Should only be used when requestProjectPolicy is set to BILLING_PROJECT.
                 type: string
               googleServiceAccount:
-                description: The Google Service Account to be used by Config Connector
-                  to authenticate with Google Cloud APIs in the associated namespace.
+                description: |-
+                  The Google Service Account to be used by Config Connector to
+                  authenticate with Google Cloud APIs in the associated namespace.
                 type: string
               requestProjectPolicy:
-                description: Specifies which project to use for preconditions, quota,
-                  and billing for requests made to Google Cloud APIs for resources
-                  in the associated namespace. Must be one of 'SERVICE_ACCOUNT_PROJECT',
-                  'RESOURCE_PROJECT', or 'BILLING_PROJECT. Defaults to 'SERVICE_ACCOUNT_PROJECT'.
-                  If set to 'SERVICE_ACCOUNT_PROJECT', uses the project that the Google
-                  Service Account belongs to. If set to 'RESOURCE_PROJECT', uses the
-                  project that the resource belongs to. If set to 'BILLING_PROJECT',
-                  uses the project specified by spec.billingProject.
+                description: |-
+                  Specifies which project to use for preconditions, quota, and billing for
+                  requests made to Google Cloud APIs for resources in the associated
+                  namespace. Must be one of 'SERVICE_ACCOUNT_PROJECT',
+                  'RESOURCE_PROJECT', or 'BILLING_PROJECT. Defaults to 'SERVICE_ACCOUNT_PROJECT'. If set to
+                  'SERVICE_ACCOUNT_PROJECT', uses the project that the Google Service
+                  Account belongs to. If set to 'RESOURCE_PROJECT', uses the project that
+                  the resource belongs to. If set to 'BILLING_PROJECT', uses the project specified by spec.billingProject.
                 enum:
                 - SERVICE_ACCOUNT_PROJECT
                 - RESOURCE_PROJECT
                 - BILLING_PROJECT
+                type: string
+              stateIntoSpec:
+                description: |-
+                  StateIntoSpec is the user override of the default value for the
+                  'cnrm.cloud.google.com/state-into-spec' annotation if the annotation is
+                  unset for a resource.
+                  'Absent' means that unspecified fields in the resource spec stay
+                  unspecified after successful reconciliation.
+                  'Merge' means that unspecified fields in the resource spec are populated
+                  after a successful reconciliation if those unspecified fields are
+                  computed/defaulted by the API. It is only applicable to resources
+                  supporting the 'Merge' option.
+                enum:
+                - Absent
+                - Merge
+                type: string
+              version:
+                description: |-
+                  Version specifies the exact addon version to be deployed, eg 1.2.3
+                  Only limited versions are supported; currently we are only supporting
+                  the operator version and the previous minor version.
                 type: string
             required:
             - googleServiceAccount
@@ -109,9 +144,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/operator-version: 1.106.0
-    controller-gen.kubebuilder.io/version: v0.10.0
-  creationTimestamp: null
+    cnrm.cloud.google.com/operator-version: 1.121.0
+    controller-gen.kubebuilder.io/version: v0.14.0
   labels:
     cnrm.cloud.google.com/operator-system: "true"
   name: configconnectors.core.cnrm.cloud.google.com
@@ -139,14 +173,19 @@ spec:
         description: ConfigConnector is the Schema for the configconnectors API
         properties:
           apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
-              of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
             type: string
           kind:
-            description: 'Kind is a string value representing the REST resource this
-              object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
             type: string
           metadata:
             type: object
@@ -179,41 +218,58 @@ spec:
                   - namespaced
             description: ConfigConnectorSpec defines the desired state of ConfigConnector
             properties:
+              actuationMode:
+                description: |-
+                  The actuation mode of Config Connector controls how resources are actuated onto the cloud provider.
+                  This can be either 'Reconciling' or 'Paused'.
+                  In 'Paused', k8s resources are still reconciled with the api server but not actuated onto the cloud provider.
+                  If Config Connector is running in 'namespaced' mode, then the value in ConfigConnectorContext (CCC) takes precedence.
+                  If CCC doesn't define a value but ConfigConnecor (CC) does, we defer to that value. Otherwise,
+                  the default is 'Reconciling' where resources get actuated.
+                enum:
+                - Reconciling
+                - Paused
+                type: string
               credentialSecretName:
-                description: The Kubernetes secret that contains the Google Service
-                  Account Key's credentials to be used by ConfigConnector to authenticate
-                  with Google Cloud APIs. This field is used only when in cluster
-                  mode. It's recommended to use `googleServiceAccount` when running
-                  ConfigConnector in Google Kubernetes Engine (GKE) clusters with
-                  Workload Identity enabled. This field cannot be specified together
-                  with `googleServiceAccount`.
+                description: |-
+                  The Kubernetes secret that contains the Google Service Account Key's credentials to be used by ConfigConnector to authenticate with Google Cloud APIs. This field is used only when in cluster mode.
+                  It's recommended to use `googleServiceAccount` when running ConfigConnector in Google Kubernetes Engine (GKE) clusters with Workload Identity enabled.
+                  This field cannot be specified together with `googleServiceAccount`.
                 type: string
               googleServiceAccount:
-                description: The Google Service Account to be used by Config Connector
-                  to authenticate with Google Cloud APIs. This field is used only
-                  when running in cluster mode with Workload Identity enabled. See
-                  Google Kubernetes Engine (GKE) workload-identity (https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity)
-                  for details. This field cannot be specified together with `credentialSecretName`.
-                  For namespaced mode, use `googleServiceAccount` in ConfigConnectorContext
-                  CRD to specify the Google Service Account to be used to authenticate
-                  with Google Cloud APIs per namespace.
+                description: |-
+                  The Google Service Account to be used by Config Connector to authenticate with Google Cloud APIs. This field is used only when running in cluster mode with Workload Identity enabled.
+                  See Google Kubernetes Engine (GKE) workload-identity (https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity) for details. This field cannot be specified together with `credentialSecretName`.
+                  For namespaced mode, use `googleServiceAccount` in ConfigConnectorContext CRD to specify the Google Service Account to be used to authenticate with Google Cloud APIs per namespace.
                 type: string
               mode:
-                description: The mode that Config Connector will run in. This can
-                  be either 'cluster' or 'namespaced'. The default is 'namespaced'.
-                  Cluster mode uses a single Google Service Account to create and
-                  manage resources, even if you are using Config Connector to manage
-                  multiple Projects. You must specify either `credentialSecretName`
-                  or `googleServiceAccount` when in cluster mode, but not both. Namespaced
-                  mode allows you to use different Google service accounts for different
-                  Projects. When in namespaced mode, you must create a ConfigConnectorContext
-                  object per namespace that you want to enable Config Connector in,
-                  and each must set `googleServiceAccount` to specify the Google Service
-                  Account to be used to authenticate with Google Cloud APIs for the
-                  namespace.
+                description: |-
+                  The mode that Config Connector will run in. This can be either 'cluster' or 'namespaced'. The default is 'namespaced'.
+                  Cluster mode uses a single Google Service Account to create and manage resources, even if you are using Config Connector to manage multiple Projects.
+                  You must specify either `credentialSecretName` or `googleServiceAccount` when in cluster mode, but not both.
+                  Namespaced mode allows you to use different Google service accounts for different Projects.
+                  When in namespaced mode, you must create a ConfigConnectorContext object per namespace that you want to enable Config Connector in, and each must set `googleServiceAccount` to specify the Google Service Account to be used to authenticate with Google Cloud APIs for the namespace.
                 enum:
                 - cluster
                 - namespaced
+                type: string
+              stateIntoSpec:
+                description: |-
+                  StateIntoSpec is the user override of the default value for the
+                  'cnrm.cloud.google.com/state-into-spec' annotation if the annotation is
+                  unset for a resource.
+                  If the field is set in both the ConfigConnector object and the
+                  ConfigConnectorContext object is in the namespaced mode, then the value
+                  in the ConfigConnectorContext object will be used.
+                  'Absent' means that unspecified fields in the resource spec stay
+                  unspecified after successful reconciliation.
+                  'Merge' means that unspecified fields in the resource spec are populated
+                  after a successful reconciliation if those unspecified fields are
+                  computed/defaulted by the API. It is only applicable to resources
+                  supporting the 'Merge' option.
+                enum:
+                - Absent
+                - Merge
                 type: string
             type: object
           status:
@@ -240,9 +296,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cnrm.cloud.google.com/operator-version: 1.106.0
-    controller-gen.kubebuilder.io/version: v0.10.0
-  creationTimestamp: null
+    cnrm.cloud.google.com/operator-version: 1.121.0
+    controller-gen.kubebuilder.io/version: v0.14.0
   labels:
     cnrm.cloud.google.com/operator-system: "true"
   name: controllerresources.customize.core.cnrm.cloud.google.com
@@ -262,41 +317,65 @@ spec:
           for config connector controllers.
         properties:
           apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
-              of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
             type: string
           kind:
-            description: 'Kind is a string value representing the REST resource this
-              object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
             type: string
           metadata:
+            properties:
+              name:
+                enum:
+                - cnrm-controller-manager
+                - cnrm-deletiondefender
+                - cnrm-unmanaged-detector
+                - cnrm-webhook-manager
+                - cnrm-resource-stats-recorder
+                type: string
             type: object
           spec:
-            description: ControllerResourceSpec is the specification of the resource
-              customization for containers of a config connector controller.
+            anyOf:
+            - required:
+              - containers
+            - required:
+              - replicas
+            description: |-
+              ControllerResourceSpec is the specification of the resource customization for containers of
+              a config connector controller.
             properties:
               containers:
                 description: The list of containers whose resource requirements to
-                  be customized. Required
+                  be customized.
                 items:
-                  description: ContainerResourceSpec is the specification of the resource
-                    customization for a container of a config connector controller.
+                  description: |-
+                    ContainerResourceSpec is the specification of the resource customization for a container of
+                    a config connector controller.
                   properties:
                     name:
-                      description: The name of the container whose resource requirements
-                        will be customized. Required
+                      description: |-
+                        The name of the container whose resource requirements will be customized.
+                        Required
                       enum:
                       - manager
                       - webhook
                       - deletiondefender
                       - prom-to-sd
                       - recorder
+                      - unmanageddetector
                       type: string
                     resources:
-                      description: Resources specifies the resource customization
-                        of this container. Required
+                      description: |-
+                        Resources specifies the resource customization of this container.
+                        Required
                       properties:
                         limits:
                           additionalProperties:
@@ -305,8 +384,9 @@ spec:
                             - type: string
                             pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                             x-kubernetes-int-or-string: true
-                          description: 'Limits describes the maximum amount of compute
-                            resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
+                          description: |-
+                            Limits describes the maximum amount of compute resources allowed.
+                            More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
                           type: object
                         requests:
                           additionalProperties:
@@ -315,11 +395,570 @@ spec:
                             - type: string
                             pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                             x-kubernetes-int-or-string: true
-                          description: 'Requests describes the minimum amount of compute
-                            resources required. If Requests is omitted for a container,
-                            it defaults to Limits if that is explicitly specified,
-                            otherwise to an implementation-defined value. More info:
-                            https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/'
+                          description: |-
+                            Requests describes the minimum amount of compute resources required.
+                            If Requests is omitted for a container, it defaults to Limits if that is explicitly specified,
+                            otherwise to an implementation-defined value. Requests cannot exceed Limits.
+                            More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+                          type: object
+                      type: object
+                  required:
+                  - name
+                  - resources
+                  type: object
+                type: array
+              replicas:
+                description: |-
+                  The number of desired replicas of the config connector controller.
+                  This field takes effect only if the controller name is "cnrm-webhook-manager".
+                format: int64
+                type: integer
+            type: object
+          status:
+            description: ControllerResourceStatus defines the observed state of ControllerResource.
+            properties:
+              errors:
+                items:
+                  type: string
+                type: array
+              healthy:
+                type: boolean
+              phase:
+                type: string
+            required:
+            - healthy
+            type: object
+        required:
+        - spec
+        type: object
+    served: false
+    storage: false
+    subresources:
+      status: {}
+  - name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: ControllerResource is the Schema for resource customization API
+          for config connector controllers.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            properties:
+              name:
+                enum:
+                - cnrm-controller-manager
+                - cnrm-deletiondefender
+                - cnrm-unmanaged-detector
+                - cnrm-webhook-manager
+                - cnrm-resource-stats-recorder
+                type: string
+            type: object
+          spec:
+            anyOf:
+            - required:
+              - containers
+            - required:
+              - replicas
+            description: |-
+              ControllerResourceSpec is the specification of the resource customization for containers of
+              a config connector controller.
+            properties:
+              containers:
+                description: The list of containers whose resource requirements to
+                  be customized.
+                items:
+                  description: |-
+                    ContainerResourceSpec is the specification of the resource customization for a container of
+                    a config connector controller.
+                  properties:
+                    name:
+                      description: |-
+                        The name of the container whose resource requirements will be customized.
+                        Required
+                      enum:
+                      - manager
+                      - webhook
+                      - deletiondefender
+                      - prom-to-sd
+                      - recorder
+                      - unmanageddetector
+                      type: string
+                    resources:
+                      description: |-
+                        Resources specifies the resource customization of this container.
+                        Required
+                      properties:
+                        limits:
+                          additionalProperties:
+                            anyOf:
+                            - type: integer
+                            - type: string
+                            pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                            x-kubernetes-int-or-string: true
+                          description: |-
+                            Limits describes the maximum amount of compute resources allowed.
+                            More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+                          type: object
+                        requests:
+                          additionalProperties:
+                            anyOf:
+                            - type: integer
+                            - type: string
+                            pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                            x-kubernetes-int-or-string: true
+                          description: |-
+                            Requests describes the minimum amount of compute resources required.
+                            If Requests is omitted for a container, it defaults to Limits if that is explicitly specified,
+                            otherwise to an implementation-defined value. Requests cannot exceed Limits.
+                            More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+                          type: object
+                      type: object
+                  required:
+                  - name
+                  - resources
+                  type: object
+                type: array
+              replicas:
+                description: |-
+                  The number of desired replicas of the config connector controller.
+                  This field takes effect only if the controller name is "cnrm-webhook-manager".
+                format: int64
+                type: integer
+            type: object
+          status:
+            description: ControllerResourceStatus defines the observed state of ControllerResource.
+            properties:
+              errors:
+                items:
+                  type: string
+                type: array
+              healthy:
+                type: boolean
+              phase:
+                type: string
+            required:
+            - healthy
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/operator-version: 1.121.0
+    controller-gen.kubebuilder.io/version: v0.14.0
+  labels:
+    cnrm.cloud.google.com/operator-system: "true"
+  name: mutatingwebhookconfigurationcustomizations.customize.core.cnrm.cloud.google.com
+spec:
+  group: customize.core.cnrm.cloud.google.com
+  names:
+    kind: MutatingWebhookConfigurationCustomization
+    listKind: MutatingWebhookConfigurationCustomizationList
+    plural: mutatingwebhookconfigurationcustomizations
+    singular: mutatingwebhookconfigurationcustomization
+  scope: Cluster
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: |-
+          MutatingWebhookConfigurationCustomization is the Schema for customizing the mutating webhook
+          configurations in config connector.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            properties:
+              name:
+                enum:
+                - mutating-webhook
+                type: string
+            type: object
+          spec:
+            description: |-
+              WebhookConfigurationCustomizationSpec is the specification for customizing the webhooks of a config
+              connector webhook configuration.
+            properties:
+              webhooks:
+                description: |-
+                  The list of webhooks whose configuration to be customized.
+                  Required
+                items:
+                  description: WebhookCustomizationSpec is the specification for customizing
+                    for a specific webhook in config connector.
+                  properties:
+                    name:
+                      description: |-
+                        The name of the webhook. Do not include the `.cnrm.cloud.google.com` suffix.
+                        Required
+                      enum:
+                      - abandon-on-uninstall
+                      - deny-immutable-field-updates
+                      - deny-unknown-fields
+                      - iam-validation
+                      - resource-validation
+                      - container-annotation-handler
+                      - generic-defaulter
+                      - iam-defaulter
+                      - management-conflict-annotation-defaulter
+                      type: string
+                    timeoutSeconds:
+                      description: |-
+                        TimeoutSeconds customizes the timeout of the webhook.
+                        The timeout value must be between 1 and 30 seconds.
+                        The default timeout in Kubernetes is 10 seconds.
+                        Required
+                      format: int32
+                      maximum: 30
+                      minimum: 1
+                      type: integer
+                  required:
+                  - name
+                  type: object
+                type: array
+            required:
+            - webhooks
+            type: object
+          status:
+            description: |-
+              WebhookConfigurationCustomizationStatus defines the observed state of ValidatingWebhookConfigurationCustomization and
+              MutatingWebhookConfigurationCustomization.
+            properties:
+              errors:
+                items:
+                  type: string
+                type: array
+              healthy:
+                type: boolean
+              phase:
+                type: string
+            required:
+            - healthy
+            type: object
+        required:
+        - spec
+        type: object
+    served: false
+    storage: false
+    subresources:
+      status: {}
+  - name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: |-
+          MutatingWebhookConfigurationCustomization is the Schema for customizing the mutating webhook
+          configurations in config connector.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            properties:
+              name:
+                enum:
+                - mutating-webhook
+                type: string
+            type: object
+          spec:
+            description: |-
+              WebhookConfigurationCustomizationSpec is the specification for customizing the webhooks of a config
+              connector webhook configuration.
+            properties:
+              webhooks:
+                description: |-
+                  The list of webhooks whose configuration to be customized.
+                  Required
+                items:
+                  description: WebhookCustomizationSpec is the specification for customizing
+                    for a specific webhook in config connector.
+                  properties:
+                    name:
+                      description: |-
+                        The name of the webhook. Do not include the `.cnrm.cloud.google.com` suffix.
+                        Required
+                      enum:
+                      - abandon-on-uninstall
+                      - deny-immutable-field-updates
+                      - deny-unknown-fields
+                      - iam-validation
+                      - resource-validation
+                      - container-annotation-handler
+                      - generic-defaulter
+                      - iam-defaulter
+                      - management-conflict-annotation-defaulter
+                      type: string
+                    timeoutSeconds:
+                      description: |-
+                        TimeoutSeconds customizes the timeout of the webhook.
+                        The timeout value must be between 1 and 30 seconds.
+                        The default timeout in Kubernetes is 10 seconds.
+                        Required
+                      format: int32
+                      maximum: 30
+                      minimum: 1
+                      type: integer
+                  required:
+                  - name
+                  type: object
+                type: array
+            required:
+            - webhooks
+            type: object
+          status:
+            description: |-
+              WebhookConfigurationCustomizationStatus defines the observed state of ValidatingWebhookConfigurationCustomization and
+              MutatingWebhookConfigurationCustomization.
+            properties:
+              errors:
+                items:
+                  type: string
+                type: array
+              healthy:
+                type: boolean
+              phase:
+                type: string
+            required:
+            - healthy
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/operator-version: 1.121.0
+    controller-gen.kubebuilder.io/version: v0.14.0
+  labels:
+    cnrm.cloud.google.com/operator-system: "true"
+  name: namespacedcontrollerreconcilers.customize.core.cnrm.cloud.google.com
+spec:
+  group: customize.core.cnrm.cloud.google.com
+  names:
+    kind: NamespacedControllerReconciler
+    listKind: NamespacedControllerReconcilerList
+    plural: namespacedcontrollerreconcilers
+    singular: namespacedcontrollerreconciler
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: |-
+          NamespacedControllerReconciler is the Schema for reconciliation related customization for
+          namespaced config connector controllers.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: NamespacedControllerReconciler is the specification of NamespacedControllerReconciler.
+            properties:
+              rateLimit:
+                description: |-
+                  RateLimit configures the token bucket rate limit to the kubernetes client used
+                  by the manager container of the config connector namespaced controller manager.
+                  Please note this rate limit is shared among all the Config Connector resources' requests.
+                  If not specified, the default will be Token Bucket with qps 20, burst 30.
+                properties:
+                  burst:
+                    description: The burst of the token bucket rate limit for all
+                      the requests to the kubernetes client.
+                    type: integer
+                  qps:
+                    description: The QPS of the token bucket rate limit for all the
+                      requests to the kubernetes client.
+                    type: integer
+                type: object
+            type: object
+          status:
+            description: NamespacedControllerReconcilerStatus defines the observed
+              state of NamespacedControllerReconciler.
+            properties:
+              errors:
+                items:
+                  type: string
+                type: array
+              healthy:
+                type: boolean
+              phase:
+                type: string
+            required:
+            - healthy
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/operator-version: 1.121.0
+    controller-gen.kubebuilder.io/version: v0.14.0
+  labels:
+    cnrm.cloud.google.com/operator-system: "true"
+  name: namespacedcontrollerresources.customize.core.cnrm.cloud.google.com
+spec:
+  group: customize.core.cnrm.cloud.google.com
+  names:
+    kind: NamespacedControllerResource
+    listKind: NamespacedControllerResourceList
+    plural: namespacedcontrollerresources
+    singular: namespacedcontrollerresource
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: NamespacedControllerResource is the Schema for resource customization
+          API for namespaced config connector controllers.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            properties:
+              name:
+                enum:
+                - cnrm-controller-manager
+                type: string
+            type: object
+          spec:
+            description: |-
+              NamespacedControllerResourceSpec is the specification of the resource customization for containers of
+              a namespaced config connector controller.
+            properties:
+              containers:
+                description: |-
+                  The list of containers whose resource requirements to be customized.
+                  Required
+                items:
+                  description: |-
+                    ContainerResourceSpec is the specification of the resource customization for a container of
+                    a config connector controller.
+                  properties:
+                    name:
+                      description: |-
+                        The name of the container whose resource requirements will be customized.
+                        Required
+                      enum:
+                      - manager
+                      - webhook
+                      - deletiondefender
+                      - prom-to-sd
+                      - recorder
+                      - unmanageddetector
+                      type: string
+                    resources:
+                      description: |-
+                        Resources specifies the resource customization of this container.
+                        Required
+                      properties:
+                        limits:
+                          additionalProperties:
+                            anyOf:
+                            - type: integer
+                            - type: string
+                            pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                            x-kubernetes-int-or-string: true
+                          description: |-
+                            Limits describes the maximum amount of compute resources allowed.
+                            More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+                          type: object
+                        requests:
+                          additionalProperties:
+                            anyOf:
+                            - type: integer
+                            - type: string
+                            pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                            x-kubernetes-int-or-string: true
+                          description: |-
+                            Requests describes the minimum amount of compute resources required.
+                            If Requests is omitted for a container, it defaults to Limits if that is explicitly specified,
+                            otherwise to an implementation-defined value. Requests cannot exceed Limits.
+                            More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
                           type: object
                       type: object
                   required:
@@ -331,7 +970,337 @@ spec:
             - containers
             type: object
           status:
-            description: ControllerResourceStatus defines the observed state of ControllerResource.
+            description: NamespacedControllerResourceStatus defines the observed state
+              of NamespacedControllerResource.
+            properties:
+              errors:
+                items:
+                  type: string
+                type: array
+              healthy:
+                type: boolean
+              phase:
+                type: string
+            required:
+            - healthy
+            type: object
+        required:
+        - spec
+        type: object
+    served: false
+    storage: false
+    subresources:
+      status: {}
+  - name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: NamespacedControllerResource is the Schema for resource customization
+          API for namespaced config connector controllers.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            properties:
+              name:
+                enum:
+                - cnrm-controller-manager
+                type: string
+            type: object
+          spec:
+            description: |-
+              NamespacedControllerResourceSpec is the specification of the resource customization for containers of
+              a namespaced config connector controller.
+            properties:
+              containers:
+                description: |-
+                  The list of containers whose resource requirements to be customized.
+                  Required
+                items:
+                  description: |-
+                    ContainerResourceSpec is the specification of the resource customization for a container of
+                    a config connector controller.
+                  properties:
+                    name:
+                      description: |-
+                        The name of the container whose resource requirements will be customized.
+                        Required
+                      enum:
+                      - manager
+                      - webhook
+                      - deletiondefender
+                      - prom-to-sd
+                      - recorder
+                      - unmanageddetector
+                      type: string
+                    resources:
+                      description: |-
+                        Resources specifies the resource customization of this container.
+                        Required
+                      properties:
+                        limits:
+                          additionalProperties:
+                            anyOf:
+                            - type: integer
+                            - type: string
+                            pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                            x-kubernetes-int-or-string: true
+                          description: |-
+                            Limits describes the maximum amount of compute resources allowed.
+                            More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+                          type: object
+                        requests:
+                          additionalProperties:
+                            anyOf:
+                            - type: integer
+                            - type: string
+                            pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                            x-kubernetes-int-or-string: true
+                          description: |-
+                            Requests describes the minimum amount of compute resources required.
+                            If Requests is omitted for a container, it defaults to Limits if that is explicitly specified,
+                            otherwise to an implementation-defined value. Requests cannot exceed Limits.
+                            More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+                          type: object
+                      type: object
+                  required:
+                  - name
+                  - resources
+                  type: object
+                type: array
+            required:
+            - containers
+            type: object
+          status:
+            description: NamespacedControllerResourceStatus defines the observed state
+              of NamespacedControllerResource.
+            properties:
+              errors:
+                items:
+                  type: string
+                type: array
+              healthy:
+                type: boolean
+              phase:
+                type: string
+            required:
+            - healthy
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/operator-version: 1.121.0
+    controller-gen.kubebuilder.io/version: v0.14.0
+  labels:
+    cnrm.cloud.google.com/operator-system: "true"
+  name: validatingwebhookconfigurationcustomizations.customize.core.cnrm.cloud.google.com
+spec:
+  group: customize.core.cnrm.cloud.google.com
+  names:
+    kind: ValidatingWebhookConfigurationCustomization
+    listKind: ValidatingWebhookConfigurationCustomizationList
+    plural: validatingwebhookconfigurationcustomizations
+    singular: validatingwebhookconfigurationcustomization
+  scope: Cluster
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: |-
+          ValidatingWebhookConfigurationCustomization is the Schema for customizing the validating webhook
+          configurations in config connector.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            properties:
+              name:
+                enum:
+                - validating-webhook
+                - abandon-on-uninstall
+                type: string
+            type: object
+          spec:
+            description: |-
+              WebhookConfigurationCustomizationSpec is the specification for customizing the webhooks of a config
+              connector webhook configuration.
+            properties:
+              webhooks:
+                description: |-
+                  The list of webhooks whose configuration to be customized.
+                  Required
+                items:
+                  description: WebhookCustomizationSpec is the specification for customizing
+                    for a specific webhook in config connector.
+                  properties:
+                    name:
+                      description: |-
+                        The name of the webhook. Do not include the `.cnrm.cloud.google.com` suffix.
+                        Required
+                      enum:
+                      - abandon-on-uninstall
+                      - deny-immutable-field-updates
+                      - deny-unknown-fields
+                      - iam-validation
+                      - resource-validation
+                      - container-annotation-handler
+                      - generic-defaulter
+                      - iam-defaulter
+                      - management-conflict-annotation-defaulter
+                      type: string
+                    timeoutSeconds:
+                      description: |-
+                        TimeoutSeconds customizes the timeout of the webhook.
+                        The timeout value must be between 1 and 30 seconds.
+                        The default timeout in Kubernetes is 10 seconds.
+                        Required
+                      format: int32
+                      maximum: 30
+                      minimum: 1
+                      type: integer
+                  required:
+                  - name
+                  type: object
+                type: array
+            required:
+            - webhooks
+            type: object
+          status:
+            description: |-
+              WebhookConfigurationCustomizationStatus defines the observed state of ValidatingWebhookConfigurationCustomization and
+              MutatingWebhookConfigurationCustomization.
+            properties:
+              errors:
+                items:
+                  type: string
+                type: array
+              healthy:
+                type: boolean
+              phase:
+                type: string
+            required:
+            - healthy
+            type: object
+        required:
+        - spec
+        type: object
+    served: false
+    storage: false
+    subresources:
+      status: {}
+  - name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: |-
+          ValidatingWebhookConfigurationCustomization is the Schema for customizing the validating webhook
+          configurations in config connector.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            properties:
+              name:
+                enum:
+                - validating-webhook
+                - abandon-on-uninstall
+                type: string
+            type: object
+          spec:
+            description: |-
+              WebhookConfigurationCustomizationSpec is the specification for customizing the webhooks of a config
+              connector webhook configuration.
+            properties:
+              webhooks:
+                description: |-
+                  The list of webhooks whose configuration to be customized.
+                  Required
+                items:
+                  description: WebhookCustomizationSpec is the specification for customizing
+                    for a specific webhook in config connector.
+                  properties:
+                    name:
+                      description: |-
+                        The name of the webhook. Do not include the `.cnrm.cloud.google.com` suffix.
+                        Required
+                      enum:
+                      - abandon-on-uninstall
+                      - deny-immutable-field-updates
+                      - deny-unknown-fields
+                      - iam-validation
+                      - resource-validation
+                      - container-annotation-handler
+                      - generic-defaulter
+                      - iam-defaulter
+                      - management-conflict-annotation-defaulter
+                      type: string
+                    timeoutSeconds:
+                      description: |-
+                        TimeoutSeconds customizes the timeout of the webhook.
+                        The timeout value must be between 1 and 30 seconds.
+                        The default timeout in Kubernetes is 10 seconds.
+                        Required
+                      format: int32
+                      maximum: 30
+                      minimum: 1
+                      type: integer
+                  required:
+                  - name
+                  type: object
+                type: array
+            required:
+            - webhooks
+            type: object
+          status:
+            description: |-
+              WebhookConfigurationCustomizationStatus defines the observed state of ValidatingWebhookConfigurationCustomization and
+              MutatingWebhookConfigurationCustomization.
             properties:
               errors:
                 items:
@@ -356,7 +1325,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   annotations:
-    cnrm.cloud.google.com/operator-version: 1.106.0
+    cnrm.cloud.google.com/operator-version: 1.121.0
   labels:
     cnrm.cloud.google.com/operator-system: "true"
   name: configconnector-operator
@@ -366,8 +1335,8 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   annotations:
-    cnrm.cloud.google.com/operator-version: 1.106.0
-    cnrm.cloud.google.com/version: 1.106.0
+    cnrm.cloud.google.com/operator-version: 1.121.0
+    cnrm.cloud.google.com/version: 1.121.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/operator-system: "true"
@@ -401,6 +1370,14 @@ rules:
   - watch
 - apiGroups:
   - apigee.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - apikeys.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -616,6 +1593,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - containerattached.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - datacatalog.cnrm.cloud.google.com
   resources:
   - '*'
@@ -713,6 +1698,22 @@ rules:
   - watch
 - apiGroups:
   - documentai.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - edgecontainer.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - edgenetwork.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -1124,7 +2125,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   annotations:
-    cnrm.cloud.google.com/operator-version: 1.106.0
+    cnrm.cloud.google.com/operator-version: 1.121.0
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/operator-system: "true"
@@ -1238,6 +2239,10 @@ rules:
   - customize.core.cnrm.cloud.google.com
   resources:
   - controllerresources
+  - namespacedcontrollerresources
+  - validatingwebhookconfigurationcustomizations
+  - mutatingwebhookconfigurationcustomizations
+  - namespacedcontrollerreconcilers
   verbs:
   - create
   - delete
@@ -1250,6 +2255,10 @@ rules:
   - customize.core.cnrm.cloud.google.com
   resources:
   - controllerresources/status
+  - namespacedcontrollerresources/status
+  - validatingwebhookconfigurationcustomizations/status
+  - mutatingwebhookconfigurationcustomizations/status
+  - namespacedcontrollerreconcilers/status
   verbs:
   - get
   - patch
@@ -1310,7 +2319,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   annotations:
-    cnrm.cloud.google.com/operator-version: 1.106.0
+    cnrm.cloud.google.com/operator-version: 1.121.0
   labels:
     cnrm.cloud.google.com/operator-system: "true"
   name: configconnector-operator-cnrm-viewer-role-binding
@@ -1327,7 +2336,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   annotations:
-    cnrm.cloud.google.com/operator-version: 1.106.0
+    cnrm.cloud.google.com/operator-version: 1.121.0
   labels:
     cnrm.cloud.google.com/operator-system: "true"
   name: configconnector-operator-rolebinding
@@ -1344,7 +2353,7 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    cnrm.cloud.google.com/operator-version: 1.106.0
+    cnrm.cloud.google.com/operator-version: 1.121.0
   labels:
     cnrm.cloud.google.com/operator-system: "true"
   name: configconnector-operator-service
@@ -1361,7 +2370,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   annotations:
-    cnrm.cloud.google.com/operator-version: 1.106.0
+    cnrm.cloud.google.com/operator-version: 1.121.0
   labels:
     cnrm.cloud.google.com/component: configconnector-operator
     cnrm.cloud.google.com/operator-system: "true"
@@ -1377,7 +2386,7 @@ spec:
   template:
     metadata:
       annotations:
-        cnrm.cloud.google.com/operator-version: 1.106.0
+        cnrm.cloud.google.com/operator-version: 1.121.0
       labels:
         cnrm.cloud.google.com/component: configconnector-operator
         cnrm.cloud.google.com/operator-system: "true"
@@ -1387,7 +2396,7 @@ spec:
         - --local-repo=/configconnector-operator/autopilot-channels
         command:
         - /configconnector-operator/manager
-        image: gcr.io/gke-release/cnrm/operator:da9adb1
+        image: gcr.io/gke-release/cnrm/operator:cac1d63
         imagePullPolicy: Always
         name: manager
         resources:

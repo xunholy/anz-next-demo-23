@@ -4,7 +4,7 @@ info:
   title: "Cloud Endpoints DNS"
   version: "1.0.0"
 paths: {}
-host: "team-alpha.endpoints.anz-next-demo-23.cloud.goog"
+host: "team-alpha.endpoints.gitops-clusters.cloud.goog"
 x-google-endpoints:
-- name: "team-alpha.endpoints.anz-next-demo-23.cloud.goog"
-  target: "34.149.140.232"
+- name: "team-alpha.endpoints.gitops-clusters.cloud.goog"
+  target: ""
