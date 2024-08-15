@@ -6,7 +6,7 @@ metadata:
   namespace: management-system
 spec:
   projectRef:
-    external: "projects/gitops-clusters"
+    external: "projects/gitops-gke-01"
   location: "global"
   workloadIdentityPoolRef:
     name: "github-oidc-pool"
