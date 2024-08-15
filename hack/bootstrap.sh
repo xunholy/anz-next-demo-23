@@ -38,6 +38,7 @@ gcloud services enable \
   servicemanagement.googleapis.com \
   servicecontrol.googleapis.com \
   cloudresourcemanager.googleapis.com \
+  cloudkms.googleapis.com \
   compute.googleapis.com \
   container.googleapis.com \
   containerregistry.googleapis.com \
@@ -65,11 +66,6 @@ gcloud projects add-iam-policy-binding ${PROJECT_ID} \
   --member="serviceAccount:${KCC_SERVICE_ACCOUNT_NAME}@${PROJECT_ID}.iam.gserviceaccount.com" \
   --role="roles/editor"
 
-gcloud iam service-accounts add-iam-policy-binding \
-  ${KCC_SERVICE_ACCOUNT_NAME}@${PROJECT_ID}.iam.gserviceaccount.com \
-  --member="serviceAccount:${PROJECT_ID}.svc.id.goog[cnrm-system/cnrm-controller-manager]" \
-  --role="roles/iam.workloadIdentityUser"
-
 # Setup a SOPS service account with appropriate permissions. This is used for encrypting secrets.
 gcloud iam service-accounts create ${SOPS_SERVICE_ACCOUNT_NAME}
 
@@ -81,11 +77,6 @@ gcloud projects add-iam-policy-binding ${PROJECT_ID} \
     --member="serviceAccount:${SOPS_SERVICE_ACCOUNT_NAME}@${PROJECT_ID}.iam.gserviceaccount.com" \
     --role="roles/cloudkms.cryptoKeyEncrypterDecrypter"
 
-gcloud iam service-accounts add-iam-policy-binding \
- ${SOPS_SERVICE_ACCOUNT_NAME}@${PROJECT_ID}.iam.gserviceaccount.com \
-  --member="serviceAccount:${PROJECT_ID}.svc.id.goog[flux-system/kustomize-controller]" \
-  --role="roles/iam.workloadIdentityUser"
-
 gcloud kms keyrings create sops --location global
 gcloud kms keys create sops-key --location global --keyring sops --purpose encryption
 gcloud kms keys list --location global --keyring sops
@@ -96,9 +87,16 @@ gcloud container clusters create-auto $CLUSTER_NAME \
     --project $PROJECT_ID \
     --release-channel rapid
 
-gcloud container clusters get-credentials $CLUSTER_NAME \
-    --region $CLUSTER_REGION \
-    --project $PROJECT_ID
+# Setup WLI for FluxCD and KCC
+gcloud iam service-accounts add-iam-policy-binding \
+ ${SOPS_SERVICE_ACCOUNT_NAME}@${PROJECT_ID}.iam.gserviceaccount.com \
+  --member="serviceAccount:${PROJECT_ID}.svc.id.goog[flux-system/kustomize-controller]" \
+  --role="roles/iam.workloadIdentityUser"
+
+gcloud iam service-accounts add-iam-policy-binding \
+  ${KCC_SERVICE_ACCOUNT_NAME}@${PROJECT_ID}.iam.gserviceaccount.com \
+  --member="serviceAccount:${PROJECT_ID}.svc.id.goog[cnrm-system/cnrm-controller-manager]" \
+  --role="roles/iam.workloadIdentityUser"
 
 # Add a one-time Github token to the cluster
 kubectl create secret generic github-token \
