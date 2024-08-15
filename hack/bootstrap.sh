@@ -182,12 +182,12 @@ gcloud compute ssl-certificates create whereamicert \
   --domains=$DEMO_NAME.endpoints.$PROJECT_ID.cloud.goog \
   --global
 
-gcloud compute ssl-certificates create alpha-tenant-cert --project $DEFAULT_GITHUB_REPO \
+gcloud compute ssl-certificates create alpha-tenant-cert \
       --project $PROJECT_ID \
       --domains="team-alpha.endpoints.$PROJECT_ID.cloud.goog" \
       --global
 
-gcloud compute ssl-certificates create bravo-tenant-cert --project $DEFAULT_GITHUB_REPO \
+gcloud compute ssl-certificates create bravo-tenant-cert \
       --project $PROJECT_ID \
       --domains="team-bravo.endpoints.$PROJECT_ID.cloud.goog" \
       --global
