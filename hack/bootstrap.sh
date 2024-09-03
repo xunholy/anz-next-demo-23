@@ -4,6 +4,21 @@
 # https://github.com/getsops/sops#23encrypting-using-gcp-kms
 # https://fluxcd.io/flux/guides/mozilla-sops/#google-cloud
 
+set -eou pipefail
+
+if ! command -v sops &> /dev/null; then
+    echo "sops must be installed" && exit 1
+fi
+
+if ! command -v flux &> /dev/null; then
+    echo "flux must be installed." && exit 1
+fi
+
+if [ -z "$GITHUB_USER" ] || \
+   [ -z "$GITHUB_TOKEN" ]; then
+  echo "Error required env variables are not set" && exit 1
+fi
+
 # Management GKE cluster configuration
 export CLUSTER_NAME=cluster-00
 export CLUSTER_REGION=us-west1
@@ -13,6 +28,7 @@ export DEFUALT_GITHUB_REPO=anz-next-demo-23
 # GCP Tooling Service Accounts
 export KCC_SERVICE_ACCOUNT_NAME=kcc-sa
 export SOPS_SERVICE_ACCOUNT_NAME=sops-sa
+export DEMO_NAME="gitops-gke"
 
 gcloud auth login
 gcloud auth application-default login
@@ -22,6 +38,7 @@ gcloud services enable \
   servicemanagement.googleapis.com \
   servicecontrol.googleapis.com \
   cloudresourcemanager.googleapis.com \
+  cloudkms.googleapis.com \
   compute.googleapis.com \
   container.googleapis.com \
   containerregistry.googleapis.com \
@@ -49,11 +66,6 @@ gcloud projects add-iam-policy-binding ${PROJECT_ID} \
   --member="serviceAccount:${KCC_SERVICE_ACCOUNT_NAME}@${PROJECT_ID}.iam.gserviceaccount.com" \
   --role="roles/editor"
 
-gcloud iam service-accounts add-iam-policy-binding \
-  ${KCC_SERVICE_ACCOUNT_NAME}@${PROJECT_ID}.iam.gserviceaccount.com \
-  --member="serviceAccount:${PROJECT_ID}.svc.id.goog[cnrm-system/cnrm-controller-manager]" \
-  --role="roles/iam.workloadIdentityUser"
-
 # Setup a SOPS service account with appropriate permissions. This is used for encrypting secrets.
 gcloud iam service-accounts create ${SOPS_SERVICE_ACCOUNT_NAME}
 
@@ -65,11 +77,6 @@ gcloud projects add-iam-policy-binding ${PROJECT_ID} \
     --member="serviceAccount:${SOPS_SERVICE_ACCOUNT_NAME}@${PROJECT_ID}.iam.gserviceaccount.com" \
     --role="roles/cloudkms.cryptoKeyEncrypterDecrypter"
 
-gcloud iam service-accounts add-iam-policy-binding \
- ${SOPS_SERVICE_ACCOUNT_NAME}@${PROJECT_ID}.iam.gserviceaccount.com \
-  --member="serviceAccount:${PROJECT_ID}.svc.id.goog[flux-system/kustomize-controller]" \
-  --role="roles/iam.workloadIdentityUser"
-
 gcloud kms keyrings create sops --location global
 gcloud kms keys create sops-key --location global --keyring sops --purpose encryption
 gcloud kms keys list --location global --keyring sops
@@ -80,9 +87,16 @@ gcloud container clusters create-auto $CLUSTER_NAME \
     --project $PROJECT_ID \
     --release-channel rapid
 
-gcloud container clusters get-credentials $CLUSTER_NAME \
-    --region $CLUSTER_REGION \
-    --project $PROJECT_ID
+# Setup WLI for FluxCD and KCC
+gcloud iam service-accounts add-iam-policy-binding \
+ ${SOPS_SERVICE_ACCOUNT_NAME}@${PROJECT_ID}.iam.gserviceaccount.com \
+  --member="serviceAccount:${PROJECT_ID}.svc.id.goog[flux-system/kustomize-controller]" \
+  --role="roles/iam.workloadIdentityUser"
+
+gcloud iam service-accounts add-iam-policy-binding \
+  ${KCC_SERVICE_ACCOUNT_NAME}@${PROJECT_ID}.iam.gserviceaccount.com \
+  --member="serviceAccount:${PROJECT_ID}.svc.id.goog[cnrm-system/cnrm-controller-manager]" \
+  --role="roles/iam.workloadIdentityUser"
 
 # Add a one-time Github token to the cluster
 kubectl create secret generic github-token \
@@ -125,9 +139,9 @@ info:
   title: "Cloud Endpoints DNS"
   version: "1.0.0"
 paths: {}
-host: "next23demo.endpoints.${PROJECT_ID}.cloud.goog"
+host: "$DEMO_NAME.endpoints.${PROJECT_ID}.cloud.goog"
 x-google-endpoints:
-- name: "next23demo.endpoints.${PROJECT_ID}.cloud.goog"
+- name: "$DEMO_NAME.endpoints.${PROJECT_ID}.cloud.goog"
   target: "${STATIC_MCI_IP}"
 EOF
 gcloud endpoints services deploy demo-openapi.yaml --project $PROJECT_ID
@@ -165,15 +179,15 @@ gcloud endpoints services deploy bravo-openapi.yaml --project $PROJECT_ID
 # Create Certificate
 gcloud compute ssl-certificates create whereamicert \
   --project $PROJECT_ID \
-  --domains=next23demo.endpoints.$PROJECT_ID.cloud.goog \
+  --domains=$DEMO_NAME.endpoints.$PROJECT_ID.cloud.goog \
   --global
 
-gcloud compute ssl-certificates create alpha-tenant-cert --project anz-next-demo-23 \
+gcloud compute ssl-certificates create alpha-tenant-cert \
       --project $PROJECT_ID \
       --domains="team-alpha.endpoints.$PROJECT_ID.cloud.goog" \
       --global
 
-gcloud compute ssl-certificates create bravo-tenant-cert --project anz-next-demo-23 \
+gcloud compute ssl-certificates create bravo-tenant-cert \
       --project $PROJECT_ID \
       --domains="team-bravo.endpoints.$PROJECT_ID.cloud.goog" \
       --global
