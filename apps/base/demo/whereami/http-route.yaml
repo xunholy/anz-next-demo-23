@@ -8,7 +8,7 @@ metadata:
     gateway: external-http
 spec:
   hostnames:
-  - "team-alpha.endpoints.anz-next-demo-23.cloud.goog"
+  - "team-alpha.endpoints.gitops-gke-01.cloud.goog"
   parentRefs:
   - name: team-alpha-external-http
     namespace: team-alpha-tenant
